@@ -1,0 +1,8 @@
+{
+    "name": "task",
+    "description": "PSYCODER-SUP's plugin for task management",
+    "version": "1.0.1",
+    "author": {
+        "name": "Psycoder SUP"
+    }
+}
