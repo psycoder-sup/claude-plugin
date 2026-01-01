@@ -1,0 +1,27 @@
+{
+    "name": "psycoder-tools",
+    "owner": {
+        "name": "Psycoer SUP",
+        "email": "parksang1993@gmail.com"
+    },
+    "plugins": [
+        {
+            "name": "base",
+            "source": "./base",
+            "description": "PSYCODER-SUP's personal claude plugin",
+            "version": "1.0.1",
+            "author": {
+                "name": "Psycoer SUP"
+            }
+        },
+        {
+            "name": "task",
+            "source": "./task",
+            "description": "PSYCODER-SUP's task managing plugin",
+            "version": "1.0.1",
+            "author": {
+                "name": "Psycoer SUP"
+            }
+        }
+    ]
+}
