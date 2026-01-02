@@ -15,6 +15,9 @@ Help a developer to make a concrete plan for implementation. Follow the systemic
 - **Create a task file**: Create a comprehensive task file in docs/tasks directory. (create one if not exists) A task file will be used as context for future implementation job. Save task plans to `docs/tasks/YYYY-MM-DD-<task-name>.md`.
 - **Follow task file template**: Follow [task file template](./task-template.md) structure when you create task file.
 
+
+**Announce at start:** "I'm using the planning-tasks skill to implement this plan."
+
 ---
 
 ## Phase 1: Discovery
