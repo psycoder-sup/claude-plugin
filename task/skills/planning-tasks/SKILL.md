@@ -1,6 +1,6 @@
 ---
 name: planning-tasks
-description: Guided task planning with codebase understanding and architecture focus and deliver a plan file.
+description: This skill should be used when the user asks to "plan a feature", "create a task plan", "break down this work", "help me plan implementation", "design the architecture", or needs systematic planning for development work. Provides guided task planning with codebase understanding, architecture focus, and delivers a comprehensive plan file.
 ---
 
 # Task planner
@@ -8,12 +8,12 @@ description: Guided task planning with codebase understanding and architecture f
 Help a developer to make a concrete plan for implementation. Follow the systemic approach: understand user requests deeply. Analyze the user's request to understand its impact of existing code base. Consequently create a plan file.
 
 ## Core Principles
-- **Ask clarifying queestions**: Identify all ambiguities, edge cases, and underspecified behviors. Ask specific, concrete questions rather than making assumptions. Wait for user answer before proceeding with implementation. Ask questions early (after understanding the codebase, before creating task files).
+- **Ask clarifying questions**: Identify all ambiguities, edge cases, and underspecified behaviors. Ask specific, concrete questions rather than making assumptions. Wait for user answer before proceeding with implementation. Ask questions early (after understanding the codebase, before creating task files).
 - **Understand before plan**: Read and comprehend existing code patterns first
 - **Read files identified by agents**: When launching agents, ask them to return lists of the most important files to read. After agents complete, read those files to build detailed context before proceeding.
-- **Simple and elegant**: Prioritize eadable, maintainable, architecturally sound plan
+- **Simple and elegant**: Prioritize readable, maintainable, architecturally sound plan
 - **Create a task file**: Create a comprehensive task file in docs/tasks directory. (create one if not exists) A task file will be used as context for future implementation job. Save task plans to `docs/tasks/YYYY-MM-DD-<task-name>.md`.
-- **Follow task file template**: Follow [task file template](./task-template.md) structure when you create task file.
+- **Follow task file template**: Follow [task file template](./references/task-template.md) structure when you create task file.
 
 
 **Announce at start:** "I'm using the planning-tasks skill to implement this plan."
@@ -26,7 +26,7 @@ Help a developer to make a concrete plan for implementation. Follow the systemic
 
 Ask user of brief explanation of the task.
 
-**ACtions**:
+**Actions**:
 1. If user requests are unclear, ask user for detailed information.
 2. Summarize understanding and confirm with user
 
@@ -34,10 +34,10 @@ Ask user of brief explanation of the task.
 
 ## Phase 2: Codebase Exploration
 
-**Goal**: Understand relevant existing code and patterns at both ligh and low levels
+**Goal**: Understand relevant existing code and patterns at both high and low levels
 
 **Actions**:
-1. Launch 2-3 task:code-expolorer agents in parallel. Each agent should:
+1. Launch 2-3 task:code-explorer agents in parallel. Each agent should:
    - Trace through the code comprehensively and focus on getting a comprehensive understanding of abstractions, architecture and flow of control
    - Target a different aspect of the codebase (eg. similar features, high level understanding, architectural understanding, user experience, etc)
    - Include a list of 5-10 key files to read
@@ -55,7 +55,7 @@ Ask user of brief explanation of the task.
 
 ## Phase 3: Clarifying Questions
 
-**Goal**: Fil lin gaps and resolve all ambiguities before planning
+**Goal**: Fill in gaps and resolve all ambiguities before planning
 
 **CRITICAL**: This is one of the most important phases. DO NOT SKIP.
 
@@ -77,7 +77,7 @@ If the user says "whatever you think is best", provide your recommendation and g
 **Actions**:
 1. Launch 2-3 task:code-architect agents in parallel with different focuses: minimal changes (smallest change, maximum reuse), clean architecture (maintainability, elegant abstractions), or pragmatic balance (speed + quality)
 2. Review all approaches and form your opinion on which fits best for this specific task (consider: small fix vs large feature, urgency, complexity, team context)
-3. Present to user: brief summary of each approach, trade-offs comparision, **your recommendation with reasoning**, concrete implementation differences
+3. Present to user: brief summary of each approach, trade-offs comparison, **your recommendation with reasoning**, concrete implementation differences
 4. **Ask user which approach they prefer**
 
 ---

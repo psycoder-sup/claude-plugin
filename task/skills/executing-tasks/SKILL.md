@@ -1,6 +1,6 @@
 ---
 name: executing-tasks
-description: Use when you have a written implementation task plan to execute in a separate session with review checkpoints
+description: This skill should be used when the user has a task plan file and asks to "execute the plan", "run the tasks", "implement the plan", "work through the tasks", "start execution", or wants to systematically execute planned work items with review checkpoints.
 ---
 
 # Executing Plans
