@@ -22,13 +22,29 @@ Help a developer to make a concrete plan for implementation. Follow the systemic
 
 ## Phase 1: Discovery
 
-**Goal**: Understand what needs to built
+**Goal**: Understand what needs to be built, including design context when applicable
 
-Ask user of brief explanation of the task.
+Ask user for a brief explanation of the task.
 
 **Actions**:
 1. If user requests are unclear, ask user for detailed information.
-2. Summarize understanding and confirm with user
+2. **Check for UI/Design work**: Determine if this task involves UI implementation
+   - User provides a Figma URL
+   - Task description mentions UI, design, component, screen, or visual elements
+3. **If Figma design is involved**, extract design context:
+   - Extract node ID from Figma URL if provided (format: `?node-id=1-2` → `1:2`)
+   - Call `mcp__plugin_figma_figma-desktop__get_design_context` with:
+     - `nodeId`: The extracted node ID (or empty for current selection)
+     - `clientLanguages`: Appropriate language for the project
+     - `clientFrameworks`: Appropriate framework for the project
+   - Call `mcp__plugin_figma_figma-desktop__get_screenshot` for visual reference
+   - Call `mcp__plugin_figma_figma-desktop__get_variable_defs` to understand design tokens
+   - Document key findings:
+     - Component structure and hierarchy
+     - Design tokens/variables used (colors, typography, spacing)
+     - Layout patterns (flex direction, alignment, gaps)
+     - Interactive states if present
+4. Summarize understanding and confirm with user
 
 ---
 
@@ -90,6 +106,11 @@ If the user says "whatever you think is best", provide your recommendation and g
 1. Read all relevant files identified in previous phases
 2. Create a task file in docs/tasks/ directory.
 3. Write clean, and comprehensive task file.
-4. Create to-dos in task file.
+4. **If UI/Design work is involved**, include Design Context section:
+   - Figma source reference (URL, node ID)
+   - Key design specifications (colors, typography, spacing)
+   - Component hierarchy overview
+   - Design tokens to use or create
+5. Create to-dos in task file.
 
 ---

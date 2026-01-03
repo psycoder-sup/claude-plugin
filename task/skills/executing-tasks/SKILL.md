@@ -18,8 +18,13 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 ### Step 1: Load and Review Plan
 1. Read plan file
 2. Review critically - identify any questions or concerns about the plan
-3. If concerns: Raise them with your human partner before starting
-4. If no concerns: Create TodoWrite and proceed
+3. **If plan has Design Context section (UI task)**:
+   - Note the Figma reference (URL, node ID)
+   - Review design specifications (colors, typography, spacing)
+   - Understand component hierarchy
+   - Identify design tokens to use or create
+4. If concerns: Raise them with your human partner before starting
+5. If no concerns: Create TodoWrite and proceed
 
 ### Step 2: Execute Batch
 **Default: First 3 tasks**
@@ -27,8 +32,13 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 For each task:
 1. Mark as in_progress
 2. Follow each step exactly (plan has bite-sized steps)
-3. Run verifications as specified
-4. Mark as completed
+3. **For UI implementation tasks**:
+   - Use `mcp__plugin_figma_figma-desktop__get_design_context` to get detailed specs for the component being implemented
+   - Reference design tokens from the plan's Design Context section
+   - Match colors, typography, and spacing exactly as specified
+   - Use `mcp__plugin_figma_figma-desktop__get_screenshot` if visual reference needed
+4. Run verifications as specified
+5. Mark as completed
 
 ### Step 3: Report
 When batch complete:
@@ -49,6 +59,7 @@ Based on feedback:
 - Plan has critical gaps preventing starting
 - You don't understand an instruction
 - Verification fails repeatedly
+- **For UI tasks**: Design specs are ambiguous, Figma node not accessible, or design conflicts with existing patterns
 
 **Ask for clarification rather than guessing.**
 
@@ -67,3 +78,4 @@ Based on feedback:
 - Reference skills when plan says to
 - Between batches: just report and wait
 - Stop when blocked, don't guess
+- **For UI tasks**: Use Figma MCP to verify implementation matches design specs
