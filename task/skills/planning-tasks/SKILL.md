@@ -16,8 +16,7 @@ Help a developer to make a concrete plan for implementation. Follow the systemic
 - **Understand before plan**: Read and comprehend existing code patterns first
 - **Read files identified by agents**: When launching agents, ask them to return lists of the most important files to read. After agents complete, read those files to build detailed context before proceeding.
 - **Simple and elegant**: Prioritize readable, maintainable, architecturally sound plan
-- **Create a task file**: Create a comprehensive task file in docs/tasks directory. (create one if not exists) A task file will be used as context for future implementation job. Save task plans to `docs/tasks/YYYY-MM-DD-<task-name>.md`.
-- **Follow task file template**: Follow [task file template](./references/task-template.md) structure when you create task file.
+- **Create a task file**: Create a comprehensive task file in docs/tasks directory (create one if not exists). Save task plans to `docs/tasks/YYYY-MM-DD-<task-name>.md`. Always follow the task file template structure (see Phase 5).
 
 
 **Announce at start:** "I'm using the planning-tasks skill to implement this plan."
@@ -104,17 +103,16 @@ If the user says "whatever you think is best", provide your recommendation and g
 
 ## Phase 5: Create task file
 
-**Goal**: Create a task file.
+**Goal**: Create a task file following the [task file template](./references/task-template.md) exactly.
 
 **Actions**:
 1. Read all relevant files identified in previous phases
-2. Create a task file in docs/tasks/ directory.
-3. Write clean, and comprehensive task file.
-4. **If UI/Design work is involved**, include Design Context section:
-   - Figma source reference (URL, node ID)
-   - Key design specifications (colors, typography, spacing)
-   - Component hierarchy overview
-   - Design tokens to use or create
-5. Create to-dos in task file.
+2. Create a task file in docs/tasks/ directory
+3. **Always follow the template structure** - fill in all sections:
+   - **Overview**: Task summary, dates, and SubTasks checklist
+   - **Design Context** (for UI/design tasks): Fill in Figma Reference, Design Specifications table, Component Hierarchy, and Design Tokens from Phase 1 findings
+   - **Technical Context**: Key files, patterns to follow, and architecture notes from Phase 2 findings
+4. For non-design tasks, omit the Design Context section entirely (it's marked optional in template)
+5. Ensure SubTasks in Overview are concrete, actionable items derived from the chosen architecture approach
 
 ---
