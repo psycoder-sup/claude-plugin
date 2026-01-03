@@ -23,12 +23,12 @@ Create mappings between Figma design components and code implementations using F
 
 **Actions**:
 1. If user provides a Figma URL, extract the node ID
-2. Call `mcp__plugin_figma_figma-desktop__get_design_context` to get component information
+2. Call `mcp__nearville-figma_figma-desktop__get_design_context` to get component information
 3. Identify:
    - Component name in Figma
    - Variants and their properties
    - Current connection status (if any)
-4. Call `mcp__plugin_figma_figma-desktop__get_metadata` if needed for component hierarchy
+4. Call `mcp__nearville-figma_figma-desktop__get_metadata` if needed for component hierarchy
 
 ---
 

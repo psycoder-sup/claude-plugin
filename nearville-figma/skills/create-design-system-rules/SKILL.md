@@ -43,8 +43,8 @@ Generate project-specific design system rules that guide Figma-to-code implement
 **Goal**: Understand how the Figma design system is structured
 
 **Actions**:
-1. Call `mcp__plugin_figma_figma-desktop__create_design_system_rules` to get the rules prompt
-2. If available, call `mcp__plugin_figma_figma-desktop__get_variable_defs` to understand Figma variables
+1. Call `mcp__nearville-figma_figma-desktop__create_design_system_rules` to get the rules prompt
+2. If available, call `mcp__nearville-figma_figma-desktop__get_variable_defs` to understand Figma variables
 3. Identify:
    - Color naming in Figma
    - Typography styles

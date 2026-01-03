@@ -26,12 +26,12 @@ Transform Figma designs into production-ready React Native code with high visual
 1. If user provides a Figma URL, extract the node ID from it
    - URL format: `https://figma.com/design/:fileKey/:fileName?node-id=1-2` → nodeId is `1:2`
    - Branch format: `https://figma.com/design/:fileKey/branch/:branchKey/:fileName` → use branchKey as fileKey
-2. Call `mcp__plugin_figma_figma-desktop__get_design_context` with:
+2. Call `mcp__nearville-figma_figma-desktop__get_design_context` with:
    - `nodeId`: The extracted node ID (or empty for current selection)
    - `clientLanguages`: "typescript"
    - `clientFrameworks`: "react-native"
    - `artifactType`: Type of artifact being created
-3. If needed, also call `mcp__plugin_figma_figma-desktop__get_screenshot` to get a visual reference
+3. If needed, also call `mcp__nearville-figma_figma-desktop__get_screenshot` to get a visual reference
 4. Review the design context output for:
    - Component structure and hierarchy
    - Styles (colors, typography, spacing)
