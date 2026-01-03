@@ -1,0 +1,8 @@
+{
+    "name": "nearville-figma",
+    "description": "Nearville Figma design integration for implementing UI from Figma files",
+    "version": "1.0.0",
+    "author": {
+        "name": "Psycoder SUP"
+    }
+}

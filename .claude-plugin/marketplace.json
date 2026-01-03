@@ -22,6 +22,15 @@
             "author": {
                 "name": "Psycoer SUP"
             }
+        },
+        {
+            "name": "nearville-figma",
+            "source": "./nearville-figma",
+            "description": "Nearville Figma design integration for implementing UI from Figma files",
+            "version": "1.0.0",
+            "author": {
+                "name": "Psycoder SUP"
+            }
         }
     ]
 }
