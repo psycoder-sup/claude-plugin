@@ -1,6 +1,9 @@
 ---
 name: executing-tasks
 description: This skill should be used when the user has a task plan file and asks to "execute the plan", "run the tasks", "implement the plan", "work through the tasks", "start execution", or wants to systematically execute planned work items with review checkpoints.
+allowed-tools:
+  - mcp__plugin_figma_figma-desktop__get_design_context
+  - mcp__plugin_figma_figma-desktop__get_screenshot
 ---
 
 # Executing Plans

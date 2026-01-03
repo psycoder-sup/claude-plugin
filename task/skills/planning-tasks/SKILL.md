@@ -1,6 +1,10 @@
 ---
 name: planning-tasks
 description: This skill should be used when the user asks to "plan a feature", "create a task plan", "break down this work", "help me plan implementation", "design the architecture", or needs systematic planning for development work. Provides guided task planning with codebase understanding, architecture focus, and delivers a comprehensive plan file.
+allowed-tools:
+  - mcp__plugin_figma_figma-desktop__get_design_context
+  - mcp__plugin_figma_figma-desktop__get_screenshot
+  - mcp__plugin_figma_figma-desktop__get_variable_defs
 ---
 
 # Task planner
