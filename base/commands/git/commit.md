@@ -1,7 +1,7 @@
 ---
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*)
 argument-hint: [message] | --no-verify | --amend
-description: Create well-formatted commits with conventional commit format and emoji
+description: Create well-formatted commits with conventional commit format and emoji. Proactively use this command when user ask you to create commits
 model: claude-haiku-4-5-20251001
 ---
 
