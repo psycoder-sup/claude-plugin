@@ -110,6 +110,7 @@ If the user says "whatever you think is best", provide your recommendation and g
 2. Check if `docs/tasks/` directory exists. Only create it if it does not exist.
 3. Create a task file in the `docs/tasks/` directory
 4. **Always follow the template structure** - fill in all sections:
+   - **Title**: Must include status: `# [Task Name] Task - [TODO]` (new tasks always start as TODO)
    - **Overview**: Task summary, dates, and SubTasks checklist
    - **Design Context** (for UI/design tasks): Fill in Figma Reference, Design Specifications table, Component Hierarchy, and Design Tokens from Phase 1 findings
    - **Technical Context**: Key files, patterns to follow, and architecture notes from Phase 2 findings

@@ -1,12 +1,12 @@
 ---
 name: executing-tasks
-description: This skill should be used when the user has a task plan file and asks to "execute the plan", "run the tasks", "implement the plan", "work through the tasks", "start execution", or wants to systematically execute planned work items with review checkpoints.
+description: This skill should be used when the user has a task plan file and asks to "execute the plan", "run the tasks", "implement the plan", "work through the tasks", "start execution", "continue execution", "resume the plan", "do the next batch", or wants to systematically execute planned work items with review checkpoints. Often used after the planning-tasks skill has created a plan.
 allowed-tools:
   - mcp__plugin_figma_figma-desktop__get_design_context
   - mcp__plugin_figma_figma-desktop__get_screenshot
 ---
 
-# Executing Plans
+# Executing Tasks
 
 ## Overview
 
@@ -14,7 +14,7 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 
 **Core principle:** Batch execution with checkpoints for architect review.
 
-**Announce at start:** "I'm using the executing-plans skill to implement this plan."
+**Announce at start:** "I'm using the executing-tasks skill to implement this plan."
 
 ## The Process
 
@@ -47,12 +47,13 @@ For each task:
 When batch complete:
 - Show what was implemented
 - Show verification output
-- Say: "Ready for feedback."
+- Report: "Ready for feedback."
 
 ### Step 4: Update Task File
 After user approves the batch:
+- **Update the title status**: Change `[TODO]` → `[In-Progress]` when starting, `[In-Progress]` → `[Done]` when all tasks complete
 - Update the task plan file to reflect current progress
-- Mark completed tasks in the file
+- Mark completed tasks in the file (checkboxes: `- [ ]` → `- [x]`)
 - Note any deviations or decisions made during implementation
 - This creates a record of actual vs planned execution
 
