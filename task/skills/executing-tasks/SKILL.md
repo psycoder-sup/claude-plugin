@@ -49,7 +49,14 @@ When batch complete:
 - Show verification output
 - Say: "Ready for feedback."
 
-### Step 4: Continue
+### Step 4: Update Task File
+After user approves the batch:
+- Update the task plan file to reflect current progress
+- Mark completed tasks in the file
+- Note any deviations or decisions made during implementation
+- This creates a record of actual vs planned execution
+
+### Step 5: Continue
 Based on feedback:
 - Apply changes if needed
 - Execute next batch
@@ -79,6 +86,6 @@ Based on feedback:
 - Follow plan steps exactly
 - Don't skip verifications
 - Reference skills when plan says to
-- Between batches: just report and wait
+- Between batches: report, wait for approval, then update task file
 - Stop when blocked, don't guess
 - **For UI tasks**: Use Figma MCP to verify implementation matches design specs
