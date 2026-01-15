@@ -9,7 +9,7 @@
             "name": "base",
             "source": "./base",
             "description": "PSYCODER-SUP's personal claude plugin",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "author": {
                 "name": "Psycoer SUP"
             }
