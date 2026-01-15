@@ -2,7 +2,7 @@
 argument-hint: [message]
 description: Create well-formatted pull request to remote repository
 model: haiku
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 
 # Smart Git Pull Request Creation
