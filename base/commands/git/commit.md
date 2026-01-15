@@ -2,7 +2,8 @@
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*)
 argument-hint: [-a|--auto] [message]
 description: Create well-formatted commits with conventional commit format and emoji. Automatically groups related changes into logical commits.
-model: claude-haiku-4-5-20251001
+model: haiku
+disable-model-invocation: true
 ---
 
 # Smart Git Commit
