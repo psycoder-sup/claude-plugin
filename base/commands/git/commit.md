@@ -1,161 +1,200 @@
 ---
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*)
-argument-hint: [message]
-description: Create well-formatted commits with conventional commit format and emoji.
+argument-hint: [-a|--auto] [message]
+description: Create well-formatted commits with conventional commit format and emoji. Automatically groups related changes into logical commits.
 model: claude-haiku-4-5-20251001
-disable-model-invocation: true
 ---
 
 # Smart Git Commit
 
-Create well-formatted commit: $ARGUMENTS
+Create well-formatted commit(s): $ARGUMENTS
 
-## Current Repository State
+## Phase 1: Analyze Repository State
+
+Gather current state information:
 
 - Git status: !`git status --porcelain`
 - Current branch: !`git branch --show-current`
 - Staged changes: !`git diff --cached --stat`
 - Unstaged changes: !`git diff --stat`
-- Recent commits: !`git log --oneline -5`
+- Recent commits (for style reference): !`git log --oneline -5`
 
-## What This Command Does
+## Phase 2: Determine Commit Strategy
 
-1. Checks which files are staged with `git status`
-2. If 0 files are staged, automatically adds all modified and new files with `git add`
-3. Performs a `git diff` to understand what changes are being committed
-4. Analyzes the diff to determine if multiple distinct logical changes are present
-5. If multiple distinct changes are detected, suggests breaking the commit into multiple smaller commits
-6. For each commit (or the single commit if not split), creates a commit message using emoji conventional commit format
+Analyze the changes and decide on the commit strategy.
 
-## Best Practices for Commits
+### Parse Arguments
 
-- **Verify before committing**: Ensure code is linted, builds correctly, and documentation is updated
-- **Atomic commits**: Each commit should contain related changes that serve a single purpose
-- **Split large changes**: If changes touch multiple concerns, split them into separate commits
-- **Conventional commit format**: Use the format `<type>: <description>` where type is one of:
-  - `feat`: A new feature
-  - `fix`: A bug fix
-  - `docs`: Documentation changes
-  - `style`: Code style changes (formatting, etc)
-  - `refactor`: Code changes that neither fix bugs nor add features
-  - `perf`: Performance improvements
-  - `test`: Adding or fixing tests
-  - `chore`: Changes to the build process, tools, etc.
-- **Present tense, imperative mood**: Write commit messages as commands (e.g., "add feature" not "added feature")
-- **Concise first line**: Keep the first line under 72 characters
-- **Emoji**: Each commit type is paired with an appropriate emoji:
-  - ✨ `feat`: New feature
-  - 🐛 `fix`: Bug fix
-  - 📝 `docs`: Documentation
-  - 💄 `style`: Formatting/style
-  - ♻️ `refactor`: Code refactoring
-  - ⚡️ `perf`: Performance improvements
-  - ✅ `test`: Tests
-  - 🔧 `chore`: Tooling, configuration
-  - 🚀 `ci`: CI/CD improvements
-  - 🗑️ `revert`: Reverting changes
-  - 🧪 `test`: Add a failing test
-  - 🚨 `fix`: Fix compiler/linter warnings
-  - 🔒️ `fix`: Fix security issues
-  - 👥 `chore`: Add or update contributors
-  - 🚚 `refactor`: Move or rename resources
-  - 🏗️ `refactor`: Make architectural changes
-  - 🔀 `chore`: Merge branches
-  - 📦️ `chore`: Add or update compiled files or packages
-  - ➕ `chore`: Add a dependency
-  - ➖ `chore`: Remove a dependency
-  - 🌱 `chore`: Add or update seed files
-  - 🧑‍💻 `chore`: Improve developer experience
-  - 🧵 `feat`: Add or update code related to multithreading or concurrency
-  - 🔍️ `feat`: Improve SEO
-  - 🏷️ `feat`: Add or update types
-  - 💬 `feat`: Add or update text and literals
-  - 🌐 `feat`: Internationalization and localization
-  - 👔 `feat`: Add or update business logic
-  - 📱 `feat`: Work on responsive design
-  - 🚸 `feat`: Improve user experience / usability
-  - 🩹 `fix`: Simple fix for a non-critical issue
-  - 🥅 `fix`: Catch errors
-  - 👽️ `fix`: Update code due to external API changes
-  - 🔥 `fix`: Remove code or files
-  - 🎨 `style`: Improve structure/format of the code
-  - 🚑️ `fix`: Critical hotfix
-  - 🎉 `chore`: Begin a project
-  - 🔖 `chore`: Release/Version tags
-  - 🚧 `wip`: Work in progress
-  - 💚 `fix`: Fix CI build
-  - 📌 `chore`: Pin dependencies to specific versions
-  - 👷 `ci`: Add or update CI build system
-  - 📈 `feat`: Add or update analytics or tracking code
-  - ✏️ `fix`: Fix typos
-  - ⏪️ `revert`: Revert changes
-  - 📄 `chore`: Add or update license
-  - 💥 `feat`: Introduce breaking changes
-  - 🍱 `assets`: Add or update assets
-  - ♿️ `feat`: Improve accessibility
-  - 💡 `docs`: Add or update comments in source code
-  - 🗃️ `db`: Perform database related changes
-  - 🔊 `feat`: Add or update logs
-  - 🔇 `fix`: Remove logs
-  - 🤡 `test`: Mock things
-  - 🥚 `feat`: Add or update an easter egg
-  - 🙈 `chore`: Add or update .gitignore file
-  - 📸 `test`: Add or update snapshots
-  - ⚗️ `experiment`: Perform experiments
-  - 🚩 `feat`: Add, update, or remove feature flags
-  - 💫 `ui`: Add or update animations and transitions
-  - ⚰️ `refactor`: Remove dead code
-  - 🦺 `feat`: Add or update code related to validation
-  - ✈️ `feat`: Improve offline support
+Check if `$ARGUMENTS` contains `-a` or `--auto` flag:
+- If `-a` or `--auto` is present: **Auto mode** - proceed without confirmation
+- Otherwise: **Confirmation mode** - ask user before creating multiple commits
 
-## Guidelines for Splitting Commits
+Extract any commit message hint from arguments (text after the flag, if any).
 
-When analyzing the diff, consider splitting commits based on these criteria:
+### Decision Tree
 
-1. **Different concerns**: Changes to unrelated parts of the codebase
-2. **Different types of changes**: Mixing features, fixes, refactoring, etc.
-3. **File patterns**: Changes to different types of files (e.g., source code vs documentation)
-4. **Logical grouping**: Changes that would be easier to understand or review separately
-5. **Size**: Very large changes that would be clearer if broken down
+1. **If files are already staged**: Respect user's staging - only analyze and commit staged files
+2. **If 4 or fewer files changed AND all changes are related**: Single commit
+3. **If 5+ files changed OR changes span multiple unrelated concerns**: Analyze for grouping
 
-## Examples
+### Grouping Analysis
 
-Good commit messages:
-- ✨ feat: add user authentication system
-- 🐛 fix: resolve memory leak in rendering process
-- 📝 docs: update API documentation with new endpoints
-- ♻️ refactor: simplify error handling logic in parser
-- 🚨 fix: resolve linter warnings in component files
-- 🧑‍💻 chore: improve developer tooling setup process
-- 👔 feat: implement business logic for transaction validation
-- 🩹 fix: address minor styling inconsistency in header
-- 🚑️ fix: patch critical security vulnerability in auth flow
-- 🎨 style: reorganize component structure for better readability
-- 🔥 fix: remove deprecated legacy code
-- 🦺 feat: add input validation for user registration form
-- 💚 fix: resolve failing CI pipeline tests
-- 📈 feat: implement analytics tracking for user engagement
-- 🔒️ fix: strengthen authentication password requirements
-- ♿️ feat: improve form accessibility for screen readers
+When grouping is needed, analyze changes by:
 
-Example of splitting commits:
-- First commit: ✨ feat: add new solc version type definitions
-- Second commit: 📝 docs: update documentation for new solc versions
-- Third commit: 🔧 chore: update package.json dependencies
-- Fourth commit: 🏷️ feat: add type definitions for new API endpoints
-- Fifth commit: 🧵 feat: improve concurrency handling in worker threads
-- Sixth commit: 🚨 fix: resolve linting issues in new code
-- Seventh commit: ✅ test: add unit tests for new solc version features
-- Eighth commit: 🔒️ fix: update dependencies with security vulnerabilities
+1. **Shared purpose**: Files that together implement one feature or fix
+2. **Change type**:
+   - Documentation (*.md, docs/*)
+   - Tests (*test*, *spec*, __tests__/*)
+   - Configuration (*.json, *.yaml, *.config.*)
+   - Source code (everything else)
+3. **Module boundaries**: Changes to separate packages/directories
+4. **Commit type alignment**: All files in a group should fit one conventional commit type
 
+## Phase 3: Execute Commits
+
+### Single Commit Flow
+
+If changes should be a single commit:
+
+1. Stage all changes if none staged: `git add -A`
+2. Review the diff to understand changes: `git diff --cached`
+3. Create commit with appropriate emoji + conventional commit format
+4. Show result: `git log --oneline -1`
+
+### Multiple Commits Flow
+
+If changes should be split into groups:
+
+**In Confirmation Mode (default):**
+
+1. Present proposed groupings to user:
+   ```
+   I've analyzed the changes and recommend splitting into N commits:
+
+   **Commit 1/N**: `emoji type: description`
+   - file1.ts
+   - file2.ts
+
+   **Commit 2/N**: `emoji type: description`
+   - file3.md
+
+   ...
+
+   Options:
+   - "yes" or "proceed" - create all commits as proposed
+   - "adjust" - modify the groupings
+   - "single" - combine into one commit
+   - "abort" - cancel commit operation
+   ```
+
+2. Wait for user confirmation before proceeding
+
+3. For each confirmed group:
+   a. Reset staging: `git reset HEAD` (if needed)
+   b. Stage only group files: `git add <file1> <file2> ...`
+   c. Create commit with appropriate message
+   d. Report: "Created commit N/M: message"
+
+4. After all commits, show summary: `git log --oneline -n <count>`
+
+**In Auto Mode (`-a` or `--auto`):**
+
+1. Analyze and group changes automatically
+2. For each group:
+   a. Stage group files: `git add <file1> <file2> ...`
+   b. Create commit with appropriate message
+   c. Report: "Created commit N/M: message"
+3. Show summary: `git log --oneline -n <count>`
+
+## Phase 4: Verification
+
+After committing, show:
+- `git log --oneline -n <number_of_commits_created>` to confirm commits
+- `git status` to confirm working tree state
+
+## Conventional Commit Format
+
+Use the format `emoji type(scope): description` where type is one of:
+
+| Emoji | Type | Description |
+|-------|------|-------------|
+| ✨ | feat | New feature |
+| 🐛 | fix | Bug fix |
+| 📝 | docs | Documentation |
+| 💄 | style | Formatting/style |
+| ♻️ | refactor | Code refactoring |
+| ⚡️ | perf | Performance improvements |
+| ✅ | test | Tests |
+| 🔧 | chore | Tooling, configuration |
+| 🚀 | ci | CI/CD improvements |
+
+### Extended Emoji Reference
+
+- 🚨 `fix`: Fix compiler/linter warnings
+- 🔒️ `fix`: Fix security issues
+- 🚚 `refactor`: Move or rename resources
+- 🏗️ `refactor`: Make architectural changes
+- ➕ `chore`: Add a dependency
+- ➖ `chore`: Remove a dependency
+- 🧑‍💻 `chore`: Improve developer experience
+- 🏷️ `feat`: Add or update types
+- 👔 `feat`: Add or update business logic
+- 🚸 `feat`: Improve user experience / usability
+- 🩹 `fix`: Simple fix for a non-critical issue
+- 🔥 `fix`: Remove code or files
+- 🎨 `style`: Improve structure/format of the code
+- 🚑️ `fix`: Critical hotfix
+- 💚 `fix`: Fix CI build
+- ✏️ `fix`: Fix typos
+- 💥 `feat`: Introduce breaking changes
+- 💡 `docs`: Add or update comments in source code
+- 🗃️ `db`: Database related changes
+- ⚰️ `refactor`: Remove dead code
+- 🦺 `feat`: Add or update validation
+
+## Grouping Examples
+
+### Example 1: Feature + Docs + Tests
+
+Changed files:
+- src/auth/login.ts
+- src/auth/session.ts
+- docs/auth.md
+- tests/auth.test.ts
+
+**Recommended grouping:**
+1. `✨ feat(auth): add session management` → login.ts, session.ts
+2. `📝 docs(auth): update authentication documentation` → auth.md
+3. `✅ test(auth): add auth unit tests` → auth.test.ts
+
+### Example 2: Related Feature Changes
+
+Changed files:
+- src/components/Button.tsx
+- src/components/Button.css
+- src/components/index.ts
+
+**Recommended:** Single commit - all changes are related:
+`✨ feat(components): add Button component with styling`
+
+### Example 3: Multiple Unrelated Fixes
+
+Changed files:
+- src/api/users.ts (bug fix)
+- package.json (dependency update)
+- .gitignore (config change)
+
+**Recommended grouping:**
+1. `🐛 fix(api): resolve user API null check` → users.ts
+2. `➕ chore(deps): update dependencies` → package.json
+3. `🙈 chore: update gitignore patterns` → .gitignore
 
 ## Important Notes
 
-- By default, pre-commit checks (`pnpm lint`, `pnpm build`, `pnpm generate:docs`) will run to ensure code quality
-- If these checks fail, you'll be asked if you want to proceed with the commit anyway or fix the issues first
-- If specific files are already staged, the command will only commit those files
-- If no files are staged, it will automatically stage all modified and new files
-- The commit message will be constructed based on the changes detected
-- Before committing, the command will review the diff to identify if multiple commits would be more appropriate
-- If suggesting multiple commits, it will help you stage and commit the changes separately
-- Always reviews the commit diff to ensure the message matches the changes
+- **Staged files take priority**: If you've staged specific files, only those will be committed
+- **Message hint**: If you provide a message like `/commit fix auth bug`, it helps identify the primary change but splitting may still be suggested
+- **Confirmation by default**: For multiple commits, you'll be asked to confirm unless `-a`/`--auto` flag is used
+- **Atomic commits**: Each commit will be atomic and self-contained
+- **Abort anytime**: Reply "abort" to stop the commit process at any point
+- **Present tense, imperative mood**: Write commit messages as commands (e.g., "add feature" not "added feature")
+- **Concise first line**: Keep the first line under 72 characters
