@@ -1,7 +1,7 @@
 {
     "name": "base",
     "description": "PSYCODER-SUP's personal claude plugin",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "author": {
         "name": "Psycoder SUP"
     }
