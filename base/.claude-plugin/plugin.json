@@ -1,7 +1,7 @@
 {
     "name": "base",
     "description": "Git workflow automation with conventional commits",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "author": {
         "name": "Psycoder SUP"
     }
