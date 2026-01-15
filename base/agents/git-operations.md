@@ -1,7 +1,7 @@
 ---
 name: git-operations
 description: Analyzes code changes and performs git operations including creating commits with conventional format, creating pull requests, and handling merge/rebase operations
-tools: Glob, Grep, LS, Read, Bash
+tools: Glob, Grep, Read, Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git branch:*), Bash(git add:*), Bash(git commit:*), Bash(git push:*), Bash(git pull:*), Bash(git merge:*), Bash(git rebase:*), Bash(git stash:*), Bash(git cherry-pick:*), Bash(git reset:*), Bash(git revert:*), Bash(git checkout:*), Bash(git switch:*), Bash(gh pr:*), AskUserQuestion
 model: haiku
 color: magenta
 ---

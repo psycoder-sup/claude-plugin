@@ -1,5 +1,4 @@
 ---
-allowed-tools: Task
 argument-hint: [message]
 description: Create well-formatted pull request to remote repository
 model: haiku

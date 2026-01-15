@@ -1,5 +1,4 @@
 ---
-allowed-tools: Task
 argument-hint: [-a|--auto] [message]
 description: Create well-formatted commits with conventional commit format and emoji. Automatically groups related changes into logical commits.
 model: haiku
