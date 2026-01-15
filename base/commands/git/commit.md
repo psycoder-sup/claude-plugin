@@ -26,11 +26,17 @@ Analyze the current git changes and generate commit information.
 
 After receiving the analysis from the agent:
 
-1. If `-a` or `--auto` flag is NOT present in the arguments, show the proposed commit(s) to the user and ask for confirmation using AskUserQuestion
-2. If confirmed (or auto mode), execute the git commands:
+1. **Display the proposal first** - Show the user:
+   - Files to be staged
+   - The complete commit message(s)
+
+2. If `-a` or `--auto` flag is NOT present in the arguments, **after displaying the proposal**, use AskUserQuestion to ask for confirmation
+
+3. If confirmed (or auto mode), execute the git commands:
    - `git add <files>` to stage the files
    - `git commit -m "<message>"` to create the commit
-3. Show the result with `git log -1`
+
+4. Show the result with `git log -1`
 
 ## Commit Message Format
 
