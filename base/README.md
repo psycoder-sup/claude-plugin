@@ -43,10 +43,28 @@ Create pull requests with:
 /create-pr
 ```
 
+## Skills
+
+### git-workflow
+Provides guidance on git workflows, conventional commits, and safe git operations. Triggered when discussing commits, PRs, or branching strategies.
+
 ## Hooks
 
-- `python_black_ruff.py` - Pre-commit hook for Python linting/formatting with Black and Ruff
+### PreToolUse: Bash
+Validates git commands before execution:
+- Blocks force push to main/master
+- Blocks hard reset on main/master
+- Blocks deletion of main/master branch
+
+## Agents
+
+### git-operations
+Handles all git workflow operations including:
+- Creating commits with conventional format
+- Creating pull requests with descriptions
+- Safe merge/rebase operations
+- Conflict resolution guidance
 
 ## Version
 
-1.0.1
+1.0.6

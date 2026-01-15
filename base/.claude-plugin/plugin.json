@@ -1,8 +1,12 @@
 {
     "name": "base",
-    "description": "PSYCODER-SUP's personal claude plugin",
-    "version": "1.0.5",
+    "description": "Git workflow automation with conventional commits",
+    "version": "1.0.6",
     "author": {
         "name": "Psycoder SUP"
-    }
+    },
+    "commands": "./commands/",
+    "agents": "./agents/",
+    "skills": "./skills/",
+    "hooks": "./hooks/hooks.json"
 }

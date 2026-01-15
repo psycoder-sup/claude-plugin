@@ -1,10 +1,14 @@
 {
     "name": "nearville-figma",
-    "description": "Nearville Figma design integration for implementing UI from Figma files",
-    "version": "1.0.1",
+    "description": "Figma design-to-code for React Native",
+    "version": "1.0.2",
     "author": {
         "name": "Psycoder SUP"
     },
+    "commands": "./commands/",
+    "agents": "./agents/",
+    "skills": "./skills/",
+    "hooks": "./hooks/hooks.json",
     "mcpServers": {
         "figma-desktop": {
             "type": "http",

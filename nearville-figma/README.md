@@ -79,6 +79,29 @@ This plugin uses Figma MCP server tools:
   elevation
   ```
 
+## Agents
+
+### design-analyzer
+Analyzes Figma designs to identify:
+- Component structure and patterns
+- Design tokens (colors, typography, spacing)
+- Implementation priorities
+- Reusable component opportunities
+
+### component-matcher
+Matches Figma design components to existing code:
+- Searches codebase for similar components
+- Evaluates visual and prop compatibility
+- Suggests adaptations needed
+
+## Hooks
+
+### PostToolUse: Write|Edit
+Validates React Native code quality:
+- Suggests StyleSheet over inline styles
+- Warns about hardcoded colors (use theme)
+- Recommends accessibility props on touchables
+
 ## Version
 
-1.0.1
+1.0.2

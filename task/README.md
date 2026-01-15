@@ -82,6 +82,14 @@ Task files are stored in `docs/tasks/YYYY-MM-DD-<task-name>.md`:
 **Patterns to Follow**: Conventions to match
 ```
 
+## Hooks
+
+### PostToolUse: Write
+Validates task files written to `docs/tasks/`:
+- Checks for required title heading
+- Validates Overview section presence
+- Warns if SubTasks checklist is missing
+
 ## Version
 
-1.1.0
+1.1.6
