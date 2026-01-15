@@ -1,25 +1,21 @@
 ---
-allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git push:*), Bash(gh pr create:*), Bash(gh pr view:*), Bash(gh pr edit:*)
+allowed-tools: Task
 argument-hint: [message]
 description: Create well-formatted pull request to remote repository
+model: haiku
 disable-model-invocation: true
 ---
 
 # Smart Git Pull Request Creation
 
-Create well formatted pull requests: $ARGUMENTS
+Use the Task tool with `subagent_type: base:git-operations` to create a well-formatted pull request.
 
-## Current Repository State
+**Arguments:** $ARGUMENTS
 
-- Git status: !`git status --porcelain`
-- Current branch: !`git branch --show-current`
-- Diff: !`git diff main...HEAD`
-- commit history: !`git log main...HEAD`
-
-## Read all the relevant code
-
-To understand code changes, read all the code that is different from main branch.
-
-## Create PR contents
-
-Based on your research create a comprehensive PR contents and create PR.
+**Prompt for the agent:**
+Analyze the branch changes and create a comprehensive pull request.
+- Check current branch and commits since main
+- Read changed files to understand the full context
+- Push the branch if not already pushed
+- Create PR with clear title and comprehensive description
+- Include what changed, why, and how to test
