@@ -1,14 +1,10 @@
 {
     "name": "nearville-figma",
     "description": "Figma design-to-code for React Native",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "author": {
         "name": "Psycoder SUP"
     },
-    "commands": "./commands/",
-    "agents": "./agents/",
-    "skills": "./skills/",
-    "hooks": "./hooks/hooks.json",
     "mcpServers": {
         "figma-desktop": {
             "type": "http",

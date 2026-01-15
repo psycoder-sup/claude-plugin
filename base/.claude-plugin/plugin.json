@@ -1,12 +1,8 @@
 {
     "name": "base",
     "description": "Git workflow automation with conventional commits",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "author": {
         "name": "Psycoder SUP"
-    },
-    "commands": "./commands/",
-    "agents": "./agents/",
-    "skills": "./skills/",
-    "hooks": "./hooks/hooks.json"
+    }
 }
