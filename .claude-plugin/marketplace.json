@@ -9,7 +9,7 @@
             "name": "base",
             "source": "./base",
             "description": "Git workflow automation with conventional commits",
-            "version": "1.0.10",
+            "version": "1.0.11",
             "author": {
                 "name": "Psycoder SUP"
             }
@@ -27,7 +27,7 @@
             "name": "nearville-figma",
             "source": "./nearville-figma",
             "description": "Figma design-to-code for React Native",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "author": {
                 "name": "Psycoder SUP"
             }
