@@ -48,6 +48,9 @@ Create pull requests with:
 ### git-workflow
 Provides guidance on git workflows, conventional commits, and safe git operations. Triggered when discussing commits, PRs, or branching strategies.
 
+### worktree (Git Worktree Workspace)
+Manages git worktrees with tmux window integration for working on multiple branches simultaneously.
+
 ## Hooks
 
 ### PreToolUse: Bash
@@ -67,4 +70,4 @@ Handles all git workflow operations including:
 
 ## Version
 
-1.0.6
+1.0.11

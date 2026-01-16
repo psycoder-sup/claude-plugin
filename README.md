@@ -6,9 +6,9 @@ A collection of Claude Code plugins for enhanced development workflows.
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| [base](./base) | 1.0.1 | Git workflow commands with conventional commits and emoji support |
-| [task](./task) | 1.1.0 | Task planning and execution system with code analysis agents |
-| [nearville-figma](./nearville-figma) | 1.0.1 | Figma design-to-code implementation for React Native |
+| [base](./base) | 1.0.11 | Git workflow commands with conventional commits and emoji support |
+| [task](./task) | 1.1.8 | Task planning and execution system with code analysis agents |
+| [nearville-figma](./nearville-figma) | 1.0.6 | Figma design-to-code implementation for React Native |
 
 ## Installation
 
