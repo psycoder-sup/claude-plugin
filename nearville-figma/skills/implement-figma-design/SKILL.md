@@ -73,7 +73,50 @@ Transform Figma designs into production-ready React Native code with high visual
 
 ---
 
-## Phase 4: Generate Code
+## Phase 4: Plan Implementation
+
+**Goal**: Design the implementation architecture before writing code
+
+**Actions**:
+1. Launch a **Plan agent** (using Task tool with `subagent_type=Plan`) to:
+   - Analyze existing component patterns and styling conventions
+   - Design the component architecture (file structure, component hierarchy)
+   - Identify reusable components and design tokens to leverage
+   - Create an implementation blueprint with:
+     - Files to create/modify with their paths
+     - Component responsibilities and interfaces
+     - Props and state design
+     - Integration points with existing code
+   - Suggest a phased implementation sequence
+
+2. Review the Plan agent's output:
+   - Verify alignment with design context from Phase 1
+   - Check proposed file locations match project conventions
+   - Confirm reuse of existing components/tokens is appropriate
+
+3. Present the implementation plan to user:
+   - Summary of architectural decisions
+   - Files to be created/modified
+   - Key design choices and trade-offs
+   - **Ask user for approval before proceeding**
+
+**Example Plan Agent Prompt**:
+```
+Analyze the codebase and create an implementation plan for a React Native component based on this Figma design context:
+[Include design context summary]
+
+Focus on:
+- Identifying existing UI patterns and components to reuse
+- Determining the optimal file structure
+- Designing component props and TypeScript interfaces
+- Planning the styling approach (StyleSheet, theme tokens, etc.)
+
+Return a concrete implementation blueprint with file paths and component structure.
+```
+
+---
+
+## Phase 5: Generate Code
 
 **Goal**: Create production-ready React Native code matching the design
 
@@ -122,7 +165,7 @@ Transform Figma designs into production-ready React Native code with high visual
 
 ---
 
-## Phase 5: Review and Refine
+## Phase 6: Review and Refine
 
 **Goal**: Ensure code quality and design accuracy
 
