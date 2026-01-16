@@ -44,7 +44,7 @@ Generate custom design system rules for your project based on existing patterns.
 
 ## Skills
 
-### implement-design
+### implement-figma-design
 Translates Figma designs with:
 - 1:1 visual fidelity
 - React Native best practices (View, Text, Pressable, etc.)
@@ -104,4 +104,4 @@ Validates React Native code quality:
 
 ## Version
 
-1.0.6
+1.0.7
