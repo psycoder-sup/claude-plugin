@@ -10,7 +10,7 @@ Auto-detect plugins with changes since their last version bump and update their 
 
 ## Step 1: Gather Current State
 
-First, read the plugin version files and check git history to determine what needs bumping.
+Read the version files and check git history for each plugin.
 
 ### Files to Read
 - `base/.claude-plugin/plugin.json`
@@ -18,48 +18,49 @@ First, read the plugin version files and check git history to determine what nee
 - `nearville-figma/.claude-plugin/plugin.json`
 - `.claude-plugin/marketplace.json`
 
-### Git Commands to Run
+### For Each Plugin (base, task, nearville-figma)
 
-For each plugin, find the last version bump commit and check for changes since then:
+Run these commands to determine if the plugin has **actual code changes**:
 
-1. **Find last version bump commit:**
+1. **Get the last version bump commit hash:**
    ```
-   git log --oneline --grep="chore(base): bump version" -1
-   git log --oneline --grep="chore(task): bump version" -1
-   git log --oneline --grep="chore(nearville-figma): bump version" -1
+   git log --grep="chore(PLUGIN): bump version" -1 --format="%H"
    ```
+   Replace `PLUGIN` with the plugin name.
 
-2. **Get the commit hash for diff comparison:**
+2. **Get changed files since last bump (excluding version files):**
    ```
-   git log --grep="chore(base): bump version" -1 --format="%H"
-   git log --grep="chore(task): bump version" -1 --format="%H"
-   git log --grep="chore(nearville-figma): bump version" -1 --format="%H"
+   git diff <HASH>..HEAD --name-only -- PLUGIN/ | grep -v "plugin.json" | grep -v "marketplace.json"
    ```
+   - If no hash found, use: `git diff HEAD~20..HEAD --name-only -- PLUGIN/ | grep -v "plugin.json"`
+   - **CRITICAL**: The `grep -v` filters out version files so only actual code changes are counted
 
-3. **Check for changes since last bump** (use the hash from step 2):
-   - If hash found: `git diff <HASH>..HEAD --name-only -- base/`
-   - If no hash: `git diff HEAD~10..HEAD --name-only -- base/`
-   - Ignore `plugin.json` files in the results (those are version files)
+3. **Decision logic for this plugin:**
+   - If the filtered output is **empty** (no lines) → **DO NOT BUMP** this plugin
+   - If the filtered output has **any files** → **BUMP** this plugin
 
 ## Step 2: Process Results
 
-Based on the information above:
+**IMPORTANT**: Only bump plugins that have actual code changes (non-empty filtered diff output).
 
-1. **Identify changed plugins** - Plugins with file changes (not "No changes") need version bumps
+For each plugin that **needs bumping** (has actual code changes):
 
-2. **Calculate new versions** - For each changed plugin, bump the patch version:
-   - X.Y.Z becomes X.Y.(Z+1)
-   - Example: 1.0.5 -> 1.0.6
+1. **Calculate new version** - Bump patch version: X.Y.Z → X.Y.(Z+1)
 
-3. **Update files** - For each changed plugin:
-   - Edit `<plugin>/.claude-plugin/plugin.json` to update the `"version"` field
-   - Edit `.claude-plugin/marketplace.json` to update that plugin's `"version"` entry
+2. **Update files**:
+   - Edit `<plugin>/.claude-plugin/plugin.json` - update `"version"` field
+   - Edit `.claude-plugin/marketplace.json` - update that plugin's `"version"` entry
 
-4. **Create commit (REQUIRED)** - After updating version files, you MUST create a commit:
-   - Stage files: `git add <plugin>/.claude-plugin/plugin.json .claude-plugin/marketplace.json`
+3. **Create commit (REQUIRED)**:
+   - Stage: `git add <plugin>/.claude-plugin/plugin.json .claude-plugin/marketplace.json`
    - Single plugin: `git commit -m "🔧 chore(<plugin>): bump version to X.Y.Z"`
    - Multiple plugins: `git commit -m "🔧 chore: bump versions (base X.Y.Z, task A.B.C)"`
 
-5. **Report results** - Show which plugins were bumped, their new versions, and the commit hash
+4. **Report results** - Show which plugins were bumped and their new versions
 
-If no plugins have changes, inform the user that no version bumps are needed.
+## No Changes Scenario
+
+If **ALL plugins** have empty filtered diffs (no actual code changes), report:
+"No version bumps needed - no plugins have code changes since their last version bump."
+
+**DO NOT bump versions just because a plugin exists or was checked.**
