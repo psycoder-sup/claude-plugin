@@ -1,6 +1,7 @@
 ---
 name: Git Worktree Workspace
 description: This skill should be used when the user asks to "create a worktree", "set up a worktree workspace", "work on multiple branches", "manage worktrees", "list worktrees", "remove worktree", or mentions needing to work on multiple branches simultaneously with tmux integration.
+model: haiku
 ---
 
 # Git Worktree Workspace Manager

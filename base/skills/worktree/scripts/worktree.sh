@@ -53,8 +53,8 @@ create_worktree() {
         # Create new window
         tmux new-window -n "$branch" -c "$worktree_path"
 
-        # Split horizontally (top/bottom) - creates new pane at bottom with focus
-        tmux split-window -v -c "$worktree_path"
+        # Split horizontally (top/bottom) - 30% terminal, 70% claude
+        tmux split-window -v -p 70 -c "$worktree_path"
 
         # Wait for shells to initialize
         sleep 0.3
@@ -65,7 +65,7 @@ create_worktree() {
         # Focus on top pane (use -U for relative selection, works with any pane-base-index)
         tmux select-pane -U
 
-        echo "Created tmux window '$branch' with dev layout (top: terminal, bottom: claude)"
+        echo "Created tmux window '$branch' with dev layout (30% terminal top, 70% claude bottom)"
     else
         echo "Not in tmux session. To open worktree:"
         echo "  cd $worktree_path"
