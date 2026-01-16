@@ -17,13 +17,13 @@ Use the helper script at `scripts/worktree.sh` for all operations:
 
 ```bash
 # Create worktree with tmux window
-${CLAUDE_PLUGIN_ROOT}/scripts/worktree.sh create <branch-name>
+${CLAUDE_PLUGIN_ROOT}/skills/worktree/scripts/worktree.sh create <branch-name>
 
 # List existing worktrees and tmux windows
-${CLAUDE_PLUGIN_ROOT}/scripts/worktree.sh list
+${CLAUDE_PLUGIN_ROOT}/skills/worktree/scripts/worktree.sh list
 
 # Remove worktree and kill associated tmux window
-${CLAUDE_PLUGIN_ROOT}/scripts/worktree.sh remove <name>
+${CLAUDE_PLUGIN_ROOT}/skills/worktree/scripts/worktree.sh remove <name>
 ```
 
 ## Operations
@@ -40,9 +40,13 @@ When creating a worktree in tmux, the script sets up a dev layout:
 
 ```
 ┌─────────────────────────┐
-│      Terminal (top)     │  ← Focus here for work
+│      Terminal (30%)     │  ← Focus here for work
 ├─────────────────────────┤
-│      Claude (bottom)    │  ← Claude running
+│                         │
+│                         │
+│      Claude (70%)       │  ← Claude running
+│                         │
+│                         │
 └─────────────────────────┘
 ```
 
