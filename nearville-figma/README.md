@@ -80,4 +80,4 @@ Validates React Native code quality:
 
 ## Version
 
-1.0.9
+1.0.10

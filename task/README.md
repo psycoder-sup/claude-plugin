@@ -89,4 +89,4 @@ Validates task files written to `docs/tasks/`:
 
 ## Version
 
-1.1.10
+1.1.11
