@@ -90,4 +90,4 @@ Reviews code for bugs, security vulnerabilities, and quality issues:
 
 ## Version
 
-1.0.14
+1.0.15
