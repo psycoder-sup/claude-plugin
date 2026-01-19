@@ -9,14 +9,15 @@ Git workflow commands for Claude Code with conventional commits and emoji suppor
 Create well-formatted commits with:
 - Conventional commit format (`feat`, `fix`, `docs`, `refactor`, etc.)
 - Emoji prefixes for visual clarity
-- Automatic pre-commit checks (`pnpm lint`, `pnpm build`, `pnpm generate:docs`)
-- Smart diff analysis to suggest splitting large changes
-- Co-author attribution
+- Smart diff analysis to group related changes logically
+- Confirmation prompt before committing
 
 **Usage:**
 ```
-/commit
-/commit --no-verify  # Skip pre-commit checks
+/commit                    # Analyze changes and ask for confirmation
+/commit -a                 # Auto mode: commit without confirmation
+/commit --auto             # Auto mode: commit without confirmation
+/commit [message]          # Include a message hint for the commit
 ```
 
 **Commit Types:**
@@ -41,6 +42,19 @@ Create pull requests with:
 **Usage:**
 ```
 /create-pr
+```
+
+### `/review-code`
+
+Review code for bugs, security issues, and quality problems:
+- Confidence-based filtering (80+ threshold)
+- Reports grouped by severity
+- Fix suggestions for each issue
+
+**Usage:**
+```
+/review-code                  # Review unstaged changes
+/review-code <files|scope>    # Review specific files or scope
 ```
 
 ## Skills
@@ -68,6 +82,12 @@ Handles all git workflow operations including:
 - Safe merge/rebase operations
 - Conflict resolution guidance
 
+### code-reviewer
+Reviews code for bugs, security vulnerabilities, and quality issues:
+- Uses confidence-based filtering (80+ threshold)
+- Reports only high-priority issues
+- Provides fix suggestions for each issue
+
 ## Version
 
-1.0.11
+1.0.14

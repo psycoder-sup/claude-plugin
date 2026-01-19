@@ -28,12 +28,12 @@ Run these commands to determine if the plugin has **actual code changes**:
    ```
    Replace `PLUGIN` with the plugin name.
 
-2. **Get changed files since last bump (excluding version files):**
+2. **Get changed files since last bump (excluding version/doc files):**
    ```
-   git diff <HASH>..HEAD --name-only -- PLUGIN/ | grep -v "plugin.json" | grep -v "marketplace.json"
+   git diff <HASH>..HEAD --name-only -- PLUGIN/ | grep -v "plugin.json" | grep -v "marketplace.json" | grep -v "README.md"
    ```
-   - If no hash found, use: `git diff HEAD~20..HEAD --name-only -- PLUGIN/ | grep -v "plugin.json"`
-   - **CRITICAL**: The `grep -v` filters out version files so only actual code changes are counted
+   - If no hash found, use: `git diff HEAD~20..HEAD --name-only -- PLUGIN/ | grep -v "plugin.json" | grep -v "README.md"`
+   - **CRITICAL**: The `grep -v` filters out version and documentation files so only actual code changes are counted
 
 3. **Decision logic for this plugin:**
    - If the filtered output is **empty** (no lines) → **DO NOT BUMP** this plugin
@@ -47,16 +47,28 @@ For each plugin that **needs bumping** (has actual code changes):
 
 1. **Calculate new version** - Bump patch version: X.Y.Z → X.Y.(Z+1)
 
-2. **Update files**:
+2. **Update version files**:
    - Edit `<plugin>/.claude-plugin/plugin.json` - update `"version"` field
    - Edit `.claude-plugin/marketplace.json` - update that plugin's `"version"` entry
 
-3. **Create commit (REQUIRED)**:
-   - Stage: `git add <plugin>/.claude-plugin/plugin.json .claude-plugin/marketplace.json`
+3. **Update documentation files**:
+   - Edit `<plugin>/README.md` - update the version number in the `## Version` section at the end of the file
+     ```markdown
+     ## Version
+
+     X.Y.Z
+     ```
+   - Edit `README.md` (root) - update the version column in the plugins table
+     ```markdown
+     | [<plugin>](./<plugin>) | X.Y.Z | Description... |
+     ```
+
+4. **Create commit (REQUIRED)**:
+   - Stage: `git add <plugin>/.claude-plugin/plugin.json .claude-plugin/marketplace.json <plugin>/README.md README.md`
    - Single plugin: `git commit -m "🔧 chore(<plugin>): bump version to X.Y.Z"`
    - Multiple plugins: `git commit -m "🔧 chore: bump versions (base X.Y.Z, task A.B.C)"`
 
-4. **Report results** - Show which plugins were bumped and their new versions
+5. **Report results** - Show which plugins were bumped and their new versions
 
 ## No Changes Scenario
 

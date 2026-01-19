@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Claude Code Plugin monorepo ("psycoder-tools") containing three plugins:
 
-- **base** - Git workflow commands (commit, create-pr) with conventional commit format and emoji support
+- **base** - Git workflow commands (commit, create-pr, review-code) with conventional commit format, emoji support, and code review
 - **task** - Task planning and execution system with code analysis agents
 - **nearville-figma** - Figma design-to-code implementation for React Native
 
@@ -18,17 +18,20 @@ claude-plugin/
 │   └── marketplace.json    # Plugin registry (versions here!)
 ├── base/
 │   ├── .claude-plugin/plugin.json  # Plugin version
-│   ├── commands/git/       # commit.md, create-pr.md
-│   └── hooks/              # Python pre-commit hooks
+│   ├── agents/             # git-operations, code-reviewer
+│   ├── commands/           # git/ (commit.md, create-pr.md), code/ (review-code.md)
+│   ├── skills/             # git-workflow, worktree
+│   └── hooks/              # Shell pre-commit hooks
 ├── task/
 │   ├── .claude-plugin/plugin.json
-│   ├── agents/             # code-architect, code-explorer, code-reviewer
+│   ├── agents/             # code-architect, code-explorer
 │   ├── commands/           # plan-task.md, execute-task.md
 │   └── skills/             # planning-tasks, executing-tasks
 └── nearville-figma/
     ├── .claude-plugin/plugin.json  # Includes MCP server config
-    ├── commands/           # implement-design, code-connect, design-system-rules
-    └── skills/             # implement-design, code-connect-components, create-design-system-rules
+    ├── agents/             # design-analyzer, component-matcher
+    ├── commands/           # implement-design.md
+    └── skills/             # implement-figma-design
 ```
 
 ## Version Management

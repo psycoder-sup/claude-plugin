@@ -24,24 +24,6 @@ Translate Figma designs to production-ready React Native code:
 /implement-design  # Uses currently selected node in Figma
 ```
 
-### `/code-connect`
-
-Connect Figma design components to code implementations using Code Connect.
-
-**Usage:**
-```
-/code-connect <figma-url>
-```
-
-### `/design-system-rules`
-
-Generate custom design system rules for your project based on existing patterns.
-
-**Usage:**
-```
-/design-system-rules
-```
-
 ## Skills
 
 ### implement-figma-design
@@ -51,12 +33,6 @@ Translates Figma designs with:
 - Design token integration
 - Platform considerations (iOS/Android)
 - Accessibility props
-
-### code-connect-components
-Maps Figma components to code using Code Connect for design-to-code consistency.
-
-### create-design-system-rules
-Analyzes your codebase to generate `.claude/figma.md` rules for consistent Figma-to-code workflows.
 
 ## MCP Tools
 
@@ -104,4 +80,4 @@ Validates React Native code quality:
 
 ## Version
 
-1.0.7
+1.0.8

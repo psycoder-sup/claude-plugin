@@ -39,9 +39,6 @@ Designs feature architectures by analyzing existing patterns. Outputs implementa
 ### code-explorer
 Analyzes codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies.
 
-### code-reviewer
-Reviews code for bugs, security vulnerabilities, and quality issues. Uses confidence-based filtering (80+ threshold) to report only high-priority issues.
-
 ## Skills
 
 ### planning-tasks
@@ -92,4 +89,4 @@ Validates task files written to `docs/tasks/`:
 
 ## Version
 
-1.1.8
+1.1.10
