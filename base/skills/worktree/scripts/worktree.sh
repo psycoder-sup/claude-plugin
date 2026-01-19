@@ -1,6 +1,6 @@
 #!/bin/bash
 # Git Worktree Workspace Manager
-# Creates worktrees at ~/.worktree/{project}/{branch} with tmux integration
+# Creates worktrees at ~/.worktree/{project}/{branch} with Ghostty integration
 
 set -e
 
@@ -15,7 +15,7 @@ get_project_name() {
     fi
 }
 
-# Create a new worktree with tmux window
+# Create a new worktree with Ghostty tab
 create_worktree() {
     local branch="$1"
     local project
@@ -48,27 +48,26 @@ create_worktree() {
         git worktree add -b "$branch" "$worktree_path"
     fi
 
-    # Create tmux window with dev layout if in tmux session
-    if [ -n "$TMUX" ]; then
-        # Create new window
-        tmux new-window -n "$branch" -c "$worktree_path"
-
-        # Split horizontally (top/bottom) - 30% terminal, 70% claude
-        tmux split-window -v -p 70 -c "$worktree_path"
-
-        # Wait for shells to initialize
-        sleep 0.3
-
-        # Run claude in bottom pane (current pane after split)
-        tmux send-keys "claude" Enter
-
-        # Focus on top pane (use -U for relative selection, works with any pane-base-index)
-        tmux select-pane -U
-
-        echo "Created tmux window '$branch' with dev layout (30% terminal top, 70% claude bottom)"
+    # Open Ghostty tab if Ghostty is available and running
+    if osascript -e 'tell application "System Events" to (name of processes) contains "Ghostty"' 2>/dev/null | grep -q "true"; then
+        osascript <<EOF
+tell application "Ghostty"
+    activate
+    delay 0.2
+    tell application "System Events"
+        keystroke "t" using command down
+    end tell
+    delay 0.5
+    tell application "System Events"
+        keystroke "cd $worktree_path && claude"
+        key code 36
+    end tell
+end tell
+EOF
+        echo "Opened new Ghostty tab with Claude in worktree"
     else
-        echo "Not in tmux session. To open worktree:"
-        echo "  cd $worktree_path"
+        echo "Ghostty not running. To open worktree manually:"
+        echo "  cd $worktree_path && claude"
     fi
 
     echo "Worktree created at: $worktree_path"
@@ -78,15 +77,9 @@ create_worktree() {
 list_worktrees() {
     echo "=== Git Worktrees ==="
     git worktree list
-    echo ""
-
-    if [ -n "$TMUX" ]; then
-        echo "=== Tmux Windows ==="
-        tmux list-windows -F "  #{window_index}: #{window_name}#{?window_active, (active),}"
-    fi
 }
 
-# Remove a worktree and its tmux window
+# Remove a worktree
 remove_worktree() {
     local name="$1"
     local project
@@ -112,18 +105,11 @@ remove_worktree() {
     echo "Removing worktree: $worktree_path"
     git worktree remove "$worktree_path" --force
 
-    # Kill tmux window if exists
-    if [ -n "$TMUX" ]; then
-        if tmux list-windows -F "#{window_name}" | grep -q "^${name}$"; then
-            tmux kill-window -t "$name"
-            echo "Killed tmux window: $name"
-        fi
-    fi
-
     # Clean up empty project directory
     rmdir "$HOME/.worktree/$project" 2>/dev/null || true
 
     echo "Worktree removed successfully"
+    echo "Note: Close any Ghostty tabs manually if still open"
 }
 
 # Main
@@ -141,9 +127,9 @@ case "${1:-}" in
         echo "Usage: worktree.sh <command> [args]"
         echo ""
         echo "Commands:"
-        echo "  create <branch>  Create worktree for branch with tmux window"
-        echo "  list             List existing worktrees and tmux windows"
-        echo "  remove <name>    Remove worktree and kill tmux window"
+        echo "  create <branch>  Create worktree for branch with Ghostty tab"
+        echo "  list             List existing worktrees"
+        echo "  remove <name>    Remove worktree"
         exit 1
         ;;
 esac

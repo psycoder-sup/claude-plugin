@@ -24,9 +24,13 @@ Run these commands to determine if the plugin has **actual code changes**:
 
 1. **Get the last version bump commit hash:**
    ```
-   git log --grep="chore(PLUGIN): bump version" -1 --format="%H"
+   git log -E --grep="chore\(PLUGIN\): bump version|bump versions.*PLUGIN" -1 --format="%H"
    ```
    Replace `PLUGIN` with the plugin name.
+
+   This pattern matches both commit formats:
+   - Single: `🔧 chore(base): bump version to X.Y.Z`
+   - Multiple: `🔧 chore: bump versions (base X.Y.Z, task A.B.C)`
 
 2. **Get changed files since last bump (excluding version/doc files):**
    ```
