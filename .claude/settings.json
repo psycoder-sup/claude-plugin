@@ -1,6 +1,10 @@
 {
   "enabledPlugins": {
     "plugin-dev@claude-plugins-official": true,
-    "base@psycoder-tools": true
+    "base@psycoder-tools": true,
+    "hookify@claude-plugins-official": true
+  },
+  "permissions": {
+    "defaultMode": "plan"
   }
 }
