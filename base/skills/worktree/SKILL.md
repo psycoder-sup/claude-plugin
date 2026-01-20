@@ -1,16 +1,16 @@
 ---
 name: Git Worktree Workspace
-description: This skill should be used when the user asks to "create a worktree", "set up a worktree workspace", "work on multiple branches", "manage worktrees", "list worktrees", "remove worktree", or mentions needing to work on multiple branches simultaneously with Ghostty integration.
+description: This skill should be used when the user asks to "create a worktree", "set up a worktree workspace", "work on multiple branches", "manage worktrees", "list worktrees", "remove worktree", or mentions needing to work on multiple branches simultaneously with tmux integration.
 model: haiku
 ---
 
 # Git Worktree Workspace Manager
 
-This skill manages git worktrees with Ghostty terminal integration, enabling work on multiple branches simultaneously without stashing changes.
+This skill manages git worktrees with tmux terminal integration, enabling work on multiple branches simultaneously without stashing changes.
 
 ## Overview
 
-Git worktrees allow checking out multiple branches of the same repository into separate directories. This skill creates organized workspaces at `~/.worktree/{project-name}/{branch-name}` and opens new Ghostty tabs for each worktree when Ghostty is running.
+Git worktrees allow checking out multiple branches of the same repository into separate directories. This skill creates organized workspaces at `~/.worktree/{project-name}/{branch-name}` and opens new tmux windows for each worktree when tmux is running.
 
 ## Helper Script
 
@@ -31,15 +31,15 @@ ${CLAUDE_PLUGIN_ROOT}/skills/worktree/scripts/worktree.sh remove <name>
 
 | Operation | Command | Description |
 |-----------|---------|-------------|
-| Create | `create <branch>` | Creates worktree, opens Ghostty tab with Claude |
+| Create | `create <branch>` | Creates worktree, opens tmux window with Claude |
 | List | `list` | Shows all git worktrees |
-| Remove | `remove <name>` | Removes worktree (close Ghostty tab manually) |
+| Remove | `remove <name>` | Removes worktree (close tmux window manually) |
 
-## Ghostty Integration
+## tmux Integration
 
 When creating a worktree, the script:
 1. Creates the git worktree at `~/.worktree/{project}/{branch}`
-2. Opens a new Ghostty tab (if Ghostty is running)
+2. Opens a new tmux window (if tmux session exists)
 3. Changes to the worktree directory
 4. Automatically starts `claude`
 
@@ -56,6 +56,6 @@ When the user requests worktree operations:
 
 - Worktrees share the same `.git` directory, so commits made in any worktree are visible to all
 - Each worktree has its own working directory and index
-- Use `Cmd+Shift+[` / `Cmd+Shift+]` to switch between Ghostty tabs
-- If Ghostty is not running, the script still creates the worktree and shows the path
-- Ghostty tabs must be closed manually when removing worktrees
+- Use `Ctrl+b n` / `Ctrl+b p` to switch between tmux windows (or your tmux prefix)
+- If tmux is not running, the script still creates the worktree and shows the path
+- tmux windows must be closed manually when removing worktrees
