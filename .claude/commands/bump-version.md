@@ -13,12 +13,12 @@ Auto-detect plugins with changes since their last version bump and update their 
 Read the version files and check git history for each plugin.
 
 ### Files to Read
-- `base/.claude-plugin/plugin.json`
-- `task/.claude-plugin/plugin.json`
-- `nearville-figma/.claude-plugin/plugin.json`
-- `.claude-plugin/marketplace.json`
+- `.claude-plugin/marketplace.json` - its `plugins` list is the set of active plugins
+- `<plugin>/.claude-plugin/plugin.json` for each plugin listed there
 
-### For Each Plugin (base, task, nearville-figma)
+Never bump anything under `archive/`.
+
+### For Each Active Plugin
 
 Run these commands to determine if the plugin has **actual code changes**:
 
@@ -70,7 +70,7 @@ For each plugin that **needs bumping** (has actual code changes):
 4. **Create commit (REQUIRED)**:
    - Stage: `git add <plugin>/.claude-plugin/plugin.json .claude-plugin/marketplace.json <plugin>/README.md README.md`
    - Single plugin: `git commit -m "🔧 chore(<plugin>): bump version to X.Y.Z"`
-   - Multiple plugins: `git commit -m "🔧 chore: bump versions (base X.Y.Z, task A.B.C)"`
+   - Multiple plugins: `git commit -m "🔧 chore: bump versions (review X.Y.Z, other A.B.C)"`
 
 5. **Report results** - Show which plugins were bumped and their new versions
 

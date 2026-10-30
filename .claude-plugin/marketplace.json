@@ -6,33 +6,6 @@
     },
     "plugins": [
         {
-            "name": "base",
-            "source": "./base",
-            "description": "Git workflow automation with conventional commits",
-            "version": "1.0.19",
-            "author": {
-                "name": "Psycoder SUP"
-            }
-        },
-        {
-            "name": "task",
-            "source": "./task",
-            "description": "Task planning and execution with code analysis agents",
-            "version": "1.1.11",
-            "author": {
-                "name": "Psycoder SUP"
-            }
-        },
-        {
-            "name": "nearville-figma",
-            "source": "./nearville-figma",
-            "description": "Figma design-to-code for React Native",
-            "version": "1.0.10",
-            "author": {
-                "name": "Psycoder SUP"
-            }
-        },
-        {
             "name": "review",
             "source": "./review",
             "description": "Repo-specific code review: REVIEW.md setup, optional PR reviewer (Actions with Claude/Codex, Claude Code Review, or local), and /local-review",
