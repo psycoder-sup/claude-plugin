@@ -11,10 +11,14 @@ be seen: read from stdin (`-F -`), built by command substitution, or an unreadab
 file. Inert without a single-file PR template with `## ` headings (a
 PULL_REQUEST_TEMPLATE/ directory has no one set of headings), and with `--web`.
 
-Contract: stdin is JSON with tool_input.command and cwd. Deny = exit 2 with the
+Standalone preflight: --check-body PATH validates a body file from the target repo
+and exits 1 on missing headings, missing template, or an unreadable file.
+
+Hook contract: stdin is JSON with tool_input.command and cwd. Deny = exit 2 with the
 reason on stderr, plus the permissionDecision JSON on stdout.
 Tests: test_pr_template_check.py beside review-setup in the psycoder-tools review plugin.
 """
+import argparse
 import json
 import os
 import re
@@ -190,6 +194,26 @@ def decide(payload):
 
 
 def main():
+    if len(sys.argv) > 1:
+        parser = argparse.ArgumentParser(description=__doc__)
+        parser.add_argument("--check-body", required=True, help="PR body file to validate")
+        args = parser.parse_args()
+        template = find_template(repo_root(os.getcwd()))
+        if not template:
+            print("pr-template-check: no single-file PR template found", file=sys.stderr)
+            return 1
+        try:
+            wanted = headings(template)
+            with open(args.check_body, encoding="utf-8") as fh:
+                body = fh.read()
+        except (OSError, UnicodeError) as exc:
+            print(f"pr-template-check: {exc}", file=sys.stderr)
+            return 1
+        missing = [h for h in wanted if h not in body]
+        if missing:
+            print(f"pr-template-check: missing {', '.join(missing)}", file=sys.stderr)
+            return 1
+        return 0
     try:
         payload = json.load(sys.stdin)
     except Exception:

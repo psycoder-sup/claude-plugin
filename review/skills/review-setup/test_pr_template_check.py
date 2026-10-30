@@ -205,5 +205,56 @@ class Payload(HookTest):
         self.denies("gh pr create --fill", key="toolInput")
 
 
+class ExplicitPreflight(unittest.TestCase):
+    """Codex checks a body file without pretending to emit a Claude hook event."""
+
+    def setUp(self):
+        self.repo = Repo()
+
+    def tearDown(self):
+        self.repo.close()
+
+    def run_check(self, body):
+        return subprocess.run([sys.executable, HOOK, "--check-body", body],
+                              cwd=self.repo.root, capture_output=True, text=True)
+
+    def test_complete_body(self):
+        self.assertEqual(self.run_check("good.md").returncode, 0)
+
+    def test_missing_headings(self):
+        result = self.run_check("bad.md")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("## What and why", result.stderr)
+        self.assertEqual(result.stdout, "")
+
+    def test_unreadable_body_fails_closed(self):
+        self.assertEqual(self.run_check("missing.md").returncode, 1)
+
+    def test_no_template_fails_closed(self):
+        os.remove(os.path.join(self.repo.root, ".github/pull_request_template.md"))
+        self.assertEqual(self.run_check("good.md").returncode, 1)
+
+    def test_body_path_with_spaces(self):
+        self.repo.write("body with spaces.md", GOOD)
+        self.assertEqual(self.run_check("body with spaces.md").returncode, 0)
+
+
+class PluginPackaging(unittest.TestCase):
+    def test_host_manifests_share_identity_and_version(self):
+        plugin = os.path.dirname(os.path.dirname(HERE))
+        with open(os.path.join(plugin, ".claude-plugin/plugin.json")) as fh:
+            claude = json.load(fh)
+        with open(os.path.join(plugin, ".codex-plugin/plugin.json")) as fh:
+            codex = json.load(fh)
+        with open(os.path.join(plugin, "../.claude-plugin/marketplace.json")) as fh:
+            entry = next(p for p in json.load(fh)["plugins"] if p["name"] == "review")
+        for key in ("name", "version", "description"):
+            self.assertEqual(claude[key], codex[key])
+        self.assertEqual(entry["version"], claude["version"])
+        self.assertEqual(codex["skills"], "./skills/")
+        for skill in ("review-setup", "local-review"):
+            self.assertTrue(os.path.isfile(os.path.join(plugin, codex["skills"], skill, "SKILL.md")))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -2,7 +2,7 @@
 name: review-setup
 description: >
   Set up code review in a repo: read the code to write a repo-specific REVIEW.md
-  (failure modes, risk tiers), CODEOWNERS, a PR template and a hook that keeps Claude's
+  (failure modes, risk tiers), CODEOWNERS, a PR template and a hook that keeps Claude Code's
   PRs on it, then pick the PR-time reviewer: a GitHub Actions workflow running Claude or
   Codex, Claude Code Review, or local review only. Opens a PR. Idempotent.
   Usage: /review-setup [path] [--yes] [--owners @a,@b] [--post-review <mode>]
@@ -21,7 +21,33 @@ is specific to the target repo.
 `path` defaults to the current directory. `--yes` accepts detected values without asking.
 `--owners` names the CODEOWNERS for High-tier paths (GitHub handles or `@org/team`).
 `--post-review` picks the PR-time reviewer (below). Templates live at
-`${CLAUDE_PLUGIN_ROOT}/skills/review-setup/templates/`.
+`templates/` beside this SKILL.md. Resolve them relative to this skill file, never the
+target repo or an environment variable. Use absolute source paths when copying into a worktree.
+
+## Host adaptation
+
+Announce: "I’m setting up the shared review policy and the selected PR reviewer."
+Use the host's available file, shell, and question tools; names in frontmatter are
+Claude Code permissions, not tools that Codex must provide. In Codex invoke this skill
+as `$review-setup`; in Claude Code use `/review:review-setup` (or the unqualified name
+when unambiguous). Treat arguments supplied in natural language the same as flags.
+If a question tool is unavailable, ask in chat and wait before dependent changes.
+
+- Claude Code: instruction file `CLAUDE.md`, worktree `.claude/worktrees/review-setup`,
+  and the Claude PR template hook described below.
+- Codex: instruction file `AGENTS.md`, worktree `.codex/worktrees/review-setup`.
+  Skip writing `.claude/` hooks or settings. Before creating a PR, run
+  `python3 <absolute-template-directory>/pr-template-check.py --check-body <body-file>`
+  from the target worktree. Fix any missing headings before using `gh pr create --body-file`.
+  This is an explicit preflight, not an installed Codex hook. Record the requirement in
+  `AGENTS.md` so later PRs also follow the template.
+
+In the steps below, substitute the host's instruction file and worktree path wherever
+`CLAUDE.md` or `.claude/worktrees/review-setup` appears (including the ignore entry).
+When writing instructions, use `$local-review` for Codex and `/review:local-review`
+for Claude Code instead of the shorthand `/local-review`. Preserve existing content in
+both instruction files. Read both when detecting repository conventions. Hook-specific
+paths and settings apply only to Claude Code; report hook merge instructions only there.
 
 ## Post-review modes
 
@@ -79,8 +105,8 @@ Read the repo without changing it:
 
 ### 2. Confirm
 
-Unless `--yes`, one `AskUserQuestion` round with everything at once: the candidate failure
-modes (4-9), the High-tier paths, the do-not-report paths, the owners if none were given,
+Unless `--yes`, one question round using the available question tool or chat with
+everything at once: the candidate failure modes (4-9), the High-tier paths, the do-not-report paths, the owners if none were given,
 and the post-review mode if `--post-review` was not given (the four modes above, with
 `local` first as the recommendation unless an existing reviewer was found, in which case
 its mode comes first). With `--yes`, use the detected values, write no CODEOWNERS without
@@ -101,14 +127,14 @@ In the worktree:
   (`gh api repos/<owner>/<repo>/collaborators/<login>/permission`) and each team is
   granted the repo; leave out and report any that fail.
 - **`.github/pull_request_template.md`** from the template, if no PR template exists.
-- **PR template hook.** `gh pr create --body` never applies the template, so Claude
+- **PR template hook (Claude Code only).** `gh pr create --body` never applies the template, so Claude
   writes its own format unless stopped. Copy `pr-template-check.py` to
   `.claude/hooks/pr-template-check.py` if absent; it denies a `gh pr create` whose body
   lacks any `## ` heading of the repo's single-file PR template (`pull_request_template.md`
   in `.github/`, the root or `docs/`, any case). If `.claude/settings.json` is absent,
   write it from `claude-settings.json`. If it exists and does not already run the hook,
   leave it and put the `PreToolUse` entry from `claude-settings.json` in the report for
-  the human to merge. Skip the hook when the repo's templates live only in a
+  the human to merge. Skip the hook and explicit preflight when the repo's templates live only in a
   `PULL_REQUEST_TEMPLATE/` directory: there is no one set of headings, so it would check
   nothing. Say so in the report.
 - **Review workflow**, by mode, only when no PR reviewer was found in step 1:
@@ -131,11 +157,13 @@ In the worktree:
 
 ### 4. Pull request
 
+Before creating the PR, read the actual template and fill every heading in a body file.
+In Codex, run the explicit preflight above when a single-file template exists.
 Stage every file written. Run `git check-ignore -q` on each one under `.claude/`; a repo
 that ignores `.claude/` would otherwise drop the hook from the commit without a word, so
 stage those with `git add -f` and say so in the report. Commit with a message listing the
 files, push, and open a PR whose body follows the PR template: risk tier High (it touches
-`.github/` and `.claude/`), the post-review mode chosen, what each file is for, and
+review infrastructure), the post-review mode chosen, what each file is for, and
 "Revert the commit" as the way back. Once the PR-time reviewer is live, this PR can be its
 first review.
 

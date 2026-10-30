@@ -1,8 +1,9 @@
 {
     "name": "review",
     "description": "Repo-specific code review: /review-setup writes REVIEW.md, CODEOWNERS, a PR template and hook, and an optional PR-time reviewer (GitHub Actions with Claude or Codex, Claude Code Review, or none); /local-review reviews a diff or PR against REVIEW.md",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "author": {
         "name": "Psycoder SUP"
-    }
+    },
+    "license": "MIT"
 }

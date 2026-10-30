@@ -1,14 +1,33 @@
 # review
 
-Repo-specific code review for Claude Code: a written review policy (`REVIEW.md`) that
+Repo-specific code review for Claude Code and Codex: a written review policy (`REVIEW.md`) that
 people, `/local-review` and an optional PR-time reviewer all read. Findings are comments,
 never approvals.
 
 ## Install
 
+Claude Code:
+
+```sh
+/plugin marketplace add psycoder-sup/claude-plugin
+/plugin install review@psycoder-tools
 ```
-/plugin install review --marketplace psycoder-sup/claude-plugin
+
+Codex CLI:
+
+```sh
+codex plugin marketplace add psycoder-sup/claude-plugin
+codex plugin add review@psycoder-tools
 ```
+
+For local development, pass this repository's absolute path instead of
+`psycoder-sup/claude-plugin` when adding the marketplace. Both hosts share the same
+`skills/` directory; `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`
+provide host-specific packaging. Version: **1.1.0**.
+
+In Claude Code use `/review:review-setup` and `/review:local-review` (unqualified
+names work when unambiguous). In Codex use `$review-setup` and `$local-review`,
+followed by arguments or a natural-language request.
 
 ## Skills
 
@@ -20,9 +39,10 @@ Reads the repo and writes what is specific to it, on a branch, then opens a PR:
   cap, re-review rounds, do-not-report paths
 - `.github/CODEOWNERS` for the High tier (with `--owners`)
 - `.github/pull_request_template.md`
-- `.claude/hooks/pr-template-check.py`: blocks a `gh pr create` whose body skips the
+- Claude Code: `.claude/hooks/pr-template-check.py` blocks a `gh pr create` whose body skips the
   template's headings
-- lines in `CLAUDE.md`
+- Codex: an explicit PR-body preflight before opening the setup PR; no Claude hook settings
+- lines in `CLAUDE.md` (Claude Code) or `AGENTS.md` (Codex)
 - the PR-time reviewer you pick (optional):
 
 | `--post-review` | PR-time reviewer | Needs |
@@ -51,6 +71,21 @@ comments, `--fix` applies the fixes and re-runs the repo's commands.
 
 ## Requirements
 
-`gh` (authenticated) and `python3` for the PR template hook.
+Git, `gh` (authenticated for PR operations), and `python3` for PR-template validation.
+The setup skill creates a branch/worktree, commits, pushes, and opens a PR. Local
+review without `--comment` needs no GitHub authentication when reviewing a local diff.
+
+Claude Code enforces template headings through its `PreToolUse` hook. Codex runs
+an explicit check before creating the setup PR and records template instructions in
+`AGENTS.md` for future PRs; it does not install an automatic Codex hook. The validator
+can also be run manually from any target repo:
+
+```sh
+python3 /absolute/path/to/review/skills/review-setup/templates/pr-template-check.py --check-body /path/to/pr-body.md
+```
+
+The explicit check exits 1 for missing headings, an unreadable body, or no single-file
+template. The Claude hook retains its existing fail-open behavior for unseen bodies.
+Neither mode checks whether the section content is meaningful.
 
 Hook tests: `python3 -m unittest discover -s review/skills/review-setup`.
