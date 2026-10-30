@@ -4,15 +4,12 @@ This file provides guidance to AI coding agents working in this repository.
 
 ## Project Overview
 
-This is a Claude Code plugin monorepo ("psycoder-tools") containing four plugins that extend Claude Code with custom commands, agents, and skills.
+This is a Claude Code plugin monorepo ("psycoder-tools") with one active plugin. Retired plugins live in `archive/` and are not listed in the marketplace; do not edit or version them.
 
 ### Plugins
 
 | Plugin | Purpose |
 |--------|---------|
-| **base** | Git workflow commands (commit, create-pr, review-code) with conventional commit format, emoji support, and code review |
-| **task** | Task planning and execution system with code analysis agents (explorer, architect) |
-| **nearville-figma** | Figma design-to-code implementation for React Native with MCP server integration |
 | **review** | Repo-specific `REVIEW.md` setup with an optional PR-time reviewer, and `/local-review` |
 
 ### Repository Structure
@@ -20,10 +17,8 @@ This is a Claude Code plugin monorepo ("psycoder-tools") containing four plugins
 ```
 claude-plugin/
 ├── .claude-plugin/marketplace.json    # Plugin registry (canonical versions)
-├── base/                              # Git workflow plugin
-├── task/                              # Task management plugin
-├── nearville-figma/                   # Figma integration plugin
 ├── review/                            # Code review plugin
+├── archive/                           # Retired plugins (base, task, nearville-figma)
 ├── CLAUDE.md                          # Project documentation
 └── AGENTS.md                          # This file
 ```
@@ -182,7 +177,7 @@ Use semantic versioning: `MAJOR.MINOR.PATCH` (e.g., `1.1.5`)
 
 | Component | Convention | Examples |
 |-----------|------------|----------|
-| Plugin names | lowercase, hyphenated | `base`, `task`, `nearville-figma` |
+| Plugin names | lowercase, hyphenated | `review` |
 | Command files | lowercase, hyphenated | `commit.md`, `create-pr.md` |
 | Agent files | lowercase, hyphenated | `code-explorer.md`, `code-architect.md` |
 | Skill directories | lowercase, hyphenated | `planning-tasks`, `implement-design` |
