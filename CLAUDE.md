@@ -4,11 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Claude Code Plugin monorepo ("psycoder-tools") containing three plugins:
+This is a Claude Code Plugin monorepo ("psycoder-tools") containing four plugins:
 
 - **base** - Git workflow commands (commit, create-pr, review-code) with conventional commit format, emoji support, and code review
 - **task** - Task planning and execution system with code analysis agents
 - **nearville-figma** - Figma design-to-code implementation for React Native
+- **review** - `/review-setup` (repo-specific REVIEW.md + optional PR reviewer) and `/local-review`
 
 ## Architecture
 
@@ -27,6 +28,9 @@ claude-plugin/
 │   ├── agents/             # code-architect, code-explorer
 │   ├── commands/           # plan-task.md, execute-task.md
 │   └── skills/             # planning-tasks, executing-tasks
+├── review/
+│   ├── .claude-plugin/plugin.json
+│   └── skills/             # review-setup (+ templates/, hook tests), local-review
 └── nearville-figma/
     ├── .claude-plugin/plugin.json  # Includes MCP server config
     ├── agents/             # design-analyzer, component-matcher

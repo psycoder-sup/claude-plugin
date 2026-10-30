@@ -1,0 +1,57 @@
+# Written by /review-setup (psycoder-tools review plugin).
+# Claude reviews every pull request against REVIEW.md and posts inline findings.
+# It comments only; it never approves or requests changes.
+#
+# Needs one repository secret (Settings → Secrets and variables → Actions):
+#   ANTHROPIC_API_KEY          an Anthropic API key, or
+#   CLAUDE_CODE_OAUTH_TOKEN    from `claude setup-token` (Claude Pro/Max subscription);
+#                              swap the `anthropic_api_key` line below for
+#                              `claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}`
+# and the Claude GitHub app installed on the repo (`/install-github-app` in Claude Code).
+name: Claude review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          track_progress: true
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Review this pull request. REVIEW.md at the repo root is the whole policy:
+            its failure modes, passes, risk tiers, finding tags, nit cap, re-review
+            rounds and do-not-report list. Read it first and follow it exactly.
+            CLAUDE.md, if present, holds the repo's conventions.
+
+            - Read the PR's existing review comments before posting. On a re-review,
+              look only at commits pushed since your last review and never repeat a
+              finding that is open or was answered.
+            - Verify every finding by reading the code it touches; drop what you
+              cannot confirm.
+            - Post each finding as an inline comment on the line it is about, then one
+              summary comment whose first line is the count REVIEW.md asks for.
+            - Never approve and never request changes.
+
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh api:*),Read,Grep,Glob"
