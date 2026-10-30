@@ -31,6 +31,15 @@
             "author": {
                 "name": "Psycoder SUP"
             }
+        },
+        {
+            "name": "review",
+            "source": "./review",
+            "description": "Repo-specific code review: REVIEW.md setup, optional PR reviewer (Actions with Claude/Codex, Claude Code Review, or local), and /local-review",
+            "version": "1.0.0",
+            "author": {
+                "name": "Psycoder SUP"
+            }
         }
     ]
 }

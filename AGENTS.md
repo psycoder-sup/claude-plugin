@@ -4,7 +4,7 @@ This file provides guidance to AI coding agents working in this repository.
 
 ## Project Overview
 
-This is a Claude Code plugin monorepo ("psycoder-tools") containing three plugins that extend Claude Code with custom commands, agents, and skills.
+This is a Claude Code plugin monorepo ("psycoder-tools") containing four plugins that extend Claude Code with custom commands, agents, and skills.
 
 ### Plugins
 
@@ -13,6 +13,7 @@ This is a Claude Code plugin monorepo ("psycoder-tools") containing three plugin
 | **base** | Git workflow commands (commit, create-pr, review-code) with conventional commit format, emoji support, and code review |
 | **task** | Task planning and execution system with code analysis agents (explorer, architect) |
 | **nearville-figma** | Figma design-to-code implementation for React Native with MCP server integration |
+| **review** | Repo-specific `REVIEW.md` setup with an optional PR-time reviewer, and `/local-review` |
 
 ### Repository Structure
 
@@ -22,6 +23,7 @@ claude-plugin/
 ├── base/                              # Git workflow plugin
 ├── task/                              # Task management plugin
 ├── nearville-figma/                   # Figma integration plugin
+├── review/                            # Code review plugin
 ├── CLAUDE.md                          # Project documentation
 └── AGENTS.md                          # This file
 ```
@@ -30,12 +32,13 @@ claude-plugin/
 
 ## Build/Lint/Test Commands
 
-This is a documentation-only repository with no build system, automated tests, or linting.
+No build system or linting. The only automated tests are the review plugin's hook tests.
 
 | Action | Command |
 |--------|---------|
 | Validate JSON syntax | Manual review or JSON linter |
 | Test plugins | Load via Claude Code and verify functionality |
+| Review hook tests | `python3 -m unittest discover -s review/skills/review-setup` |
 | Validate markdown | Ensure YAML frontmatter parses correctly |
 
 There are no `npm`, `pnpm`, or other package manager scripts in this repository.
