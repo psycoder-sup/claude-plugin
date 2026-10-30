@@ -1,19 +1,39 @@
 # psycoder-tools
 
-A Claude Code plugin marketplace.
+A plugin marketplace for Claude Code and Codex.
 
 ## Plugins
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| [review](./review) | 1.0.0 | Repo-specific `REVIEW.md`, optional PR reviewer (Actions with Claude/Codex, Claude Code Review, or local), local review |
+| [review](./review) | 1.1.0 | Repo-specific `REVIEW.md`, optional PR reviewer (Actions with Claude/Codex, Claude Code Review, or local), local review |
 
 ## Installation
+
+Claude Code:
 
 ```
 /plugin marketplace add psycoder-sup/claude-plugin
 /plugin install review@psycoder-tools
 ```
+
+Codex: add this repository as a marketplace:
+
+```sh
+codex plugin marketplace add psycoder-sup/claude-plugin
+```
+
+Open `/plugins`, select `review` from `psycoder-tools`, install it, and start a new
+chat. Invoke `$review-setup` or `$local-review` in Codex; the slash syntax below is
+for Claude Code. For local development, run `codex plugin marketplace add .` from
+this checkout, then install through the plugin browser.
+
+Both hosts share the skills in `review/skills/`. Codex uses
+`review/.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json`.
+The setup skill writes shared review instructions to `AGENTS.md` in both hosts.
+The PR template enforcement hook is Claude Code only; Codex checks headings manually.
+
+Packaging follows the [official OpenAI plugin documentation](https://developers.openai.com/plugins/build/plugins).
 
 ## Available Commands
 

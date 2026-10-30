@@ -11,7 +11,7 @@
 
 ## Testing
 
-<!-- Paste the tail of every command under "Commands" in CLAUDE.md, and anything else you ran. -->
+<!-- Paste the tail of every command under "Commands" in AGENTS.md, and anything else you ran. -->
 
 ## How to revert
 

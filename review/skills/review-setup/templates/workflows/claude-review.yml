@@ -42,7 +42,7 @@ jobs:
             Review this pull request. REVIEW.md at the repo root is the whole policy:
             its failure modes, passes, risk tiers, finding tags, nit cap, re-review
             rounds and do-not-report list. Read it first and follow it exactly.
-            CLAUDE.md, if present, holds the repo's conventions.
+            AGENTS.md, if present, holds the repo's conventions.
 
             - Read the PR's existing review comments before posting. On a re-review,
               look only at commits pushed since your last review and never repeat a

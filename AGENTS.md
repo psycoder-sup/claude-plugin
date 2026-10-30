@@ -4,7 +4,7 @@ This file provides guidance to AI coding agents working in this repository.
 
 ## Project Overview
 
-This is a Claude Code plugin monorepo ("psycoder-tools") with one active plugin. Retired plugins live in `archive/` and are not listed in the marketplace; do not edit or version them.
+This is a Claude Code and Codex plugin monorepo ("psycoder-tools") with one active plugin. Retired plugins live in `archive/` and are not listed in the marketplace; do not edit or version them.
 
 ### Plugins
 
@@ -17,9 +17,9 @@ This is a Claude Code plugin monorepo ("psycoder-tools") with one active plugin.
 ```
 claude-plugin/
 ├── .claude-plugin/marketplace.json    # Plugin registry (canonical versions)
-├── review/                            # Code review plugin
+├── .agents/plugins/marketplace.json   # Codex marketplace catalog
+├── review/                            # Shared skills and both host manifests
 ├── archive/                           # Retired plugins (base, task, nearville-figma)
-├── CLAUDE.md                          # Project documentation
 └── AGENTS.md                          # This file
 ```
 
@@ -32,7 +32,7 @@ No build system or linting. The only automated tests are the review plugin's hoo
 | Action | Command |
 |--------|---------|
 | Validate JSON syntax | Manual review or JSON linter |
-| Test plugins | Load via Claude Code and verify functionality |
+| Test plugins | Install in Claude Code and Codex and verify functionality |
 | Review hook tests | `python3 -m unittest discover -s review/skills/review-setup` |
 | Validate markdown | Ensure YAML frontmatter parses correctly |
 
@@ -49,7 +49,9 @@ Each plugin follows this structure:
 ```
 <plugin>/
 ├── .claude-plugin/
-│   └── plugin.json          # Plugin metadata and version
+│   └── plugin.json          # Claude Code metadata and version
+├── .codex-plugin/
+│   └── plugin.json          # Codex metadata and version
 ├── commands/
 │   └── <category>/          # Optional subdirectory grouping
 │       └── <command>.md     # Slash command definition
@@ -66,8 +68,8 @@ Each plugin follows this structure:
 ### Root Configuration
 
 - `.claude-plugin/marketplace.json` - Registry of all plugins with versions
-- `CLAUDE.md` - Project overview and conventions
-- `AGENTS.md` - AI agent instructions (this file)
+- `.agents/plugins/marketplace.json` - Codex catalog pointing to the same plugin folders
+- `AGENTS.md` - Shared project overview, conventions, and agent instructions (this file)
 
 ---
 
@@ -158,10 +160,11 @@ The authoritative version for each plugin is in `.claude-plugin/marketplace.json
 
 ### Version Sync Requirements
 
-When updating a plugin version, update both files:
+When updating a plugin version, update all three files:
 
 1. `.claude-plugin/marketplace.json` - Marketplace registry entry
-2. `<plugin>/.claude-plugin/plugin.json` - Plugin's own metadata
+2. `<plugin>/.claude-plugin/plugin.json` - Claude Code metadata
+3. `<plugin>/.codex-plugin/plugin.json` - Codex metadata
 
 The README.md version table is informational and may lag behind.
 
@@ -237,4 +240,17 @@ Include common trigger phrases in skill descriptions to help with automatic matc
 
 1. Update version in `.claude-plugin/marketplace.json`
 2. Update version in `<plugin>/.claude-plugin/plugin.json`
-3. Optionally update `<plugin>/README.md` and root `README.md`
+3. Update version in `<plugin>/.codex-plugin/plugin.json`
+4. Optionally update `<plugin>/README.md` and root `README.md`
+
+## Cross-host Compatibility
+
+Use `AGENTS.md` as this repository's only agent instruction file in both hosts.
+Shared review skills explicitly read and write `AGENTS.md`; recurring findings go
+under `## Recurring review findings`.
+
+Codex discovery uses `.agents/plugins/marketplace.json`, pointing to the same
+`review/` folder as the Claude Code marketplace. Both host manifests use the
+canonical marketplace version. Resolve skill templates relative to the installed
+`SKILL.md`. The PR template enforcement hook and settings remain Claude Code only;
+Codex checks template headings manually.

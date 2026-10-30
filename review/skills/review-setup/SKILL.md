@@ -2,8 +2,7 @@
 name: review-setup
 description: >
   Set up code review in a repo: read the code to write a repo-specific REVIEW.md
-  (failure modes, risk tiers), CODEOWNERS, a PR template and a hook that keeps Claude's
-  PRs on it, then pick the PR-time reviewer: a GitHub Actions workflow running Claude or
+  (failure modes, risk tiers), CODEOWNERS, a PR template and a Claude Code hook that keeps PRs on it, then pick the PR-time reviewer: a GitHub Actions workflow running Claude or
   Codex, Claude Code Review, or local review only. Opens a PR. Idempotent.
   Usage: /review-setup [path] [--yes] [--owners @a,@b] [--post-review <mode>]
 disable-model-invocation: true
@@ -21,7 +20,28 @@ is specific to the target repo.
 `path` defaults to the current directory. `--yes` accepts detected values without asking.
 `--owners` names the CODEOWNERS for High-tier paths (GitHub handles or `@org/team`).
 `--post-review` picks the PR-time reviewer (below). Templates live at
-`${CLAUDE_PLUGIN_ROOT}/skills/review-setup/templates/`.
+`templates/` beside this `SKILL.md`, resolved from the installed skill location,
+not the target repository or a host-specific environment variable.
+
+## Host compatibility
+
+Use native host tools to read, edit, and run commands. `AskUserQuestion` below means
+the host's question tool, or a chat question when none is available.
+
+Use `AGENTS.md` as the shared instruction file in both Claude Code and Codex. Read it
+explicitly; create it if absent and preserve existing content. Write all generated
+review and PR-template instructions there. Existing `CLAUDE.md` files may provide
+additional repository context, but do not write generated review instructions to them.
+
+Determine the host from the session for the worktree directory: Claude Code uses
+`.claude/worktrees/review-setup`; Codex uses `.worktrees/review-setup`.
+Add the chosen worktree parent to `.gitignore` if missing.
+
+The PR template hook and `claude-settings.json` are Claude Code only. In Codex, skip
+hook detection, installation, and settings merge instructions. Do not create
+`.claude/hooks/` or `.claude/settings.json`. Check the PR body's template headings
+manually before `gh pr create`, and report that no Codex hook was installed.
+All other outputs and all four PR-time reviewer modes work in either host.
 
 ## Post-review modes
 
@@ -39,7 +59,7 @@ Default with `--yes` and no `--post-review`: `local`, since it needs no secret o
 ## Rules
 
 - **Only add.** Write a file only when it is absent, except an unedited `REVIEW.md`
-  template (below), which is filled in place, and the lines added to `CLAUDE.md`. Never
+  template (below), which is filled in place, and the lines added to `AGENTS.md`. Never
   rewrite the repo's own files; suggest changes in the report instead. A second run on an
   unchanged repo makes no change.
 - **Never change repository or organisation settings**: branch protection, rulesets,
@@ -49,9 +69,9 @@ Default with `--yes` and no `--post-review`: `local`, since it needs no secret o
   Two PR-time reviewers review every PR twice; an existing one is reported, not removed.
 - **Specific or dropped.** Every failure mode and High-tier path comes from code you read
   in this repo. One that would fit any repo is dropped.
-- **Work on a branch.** Make the changes in a worktree at `.claude/worktrees/review-setup`
+- **Work on a branch.** Make the changes in a worktree at the host-specific directory above
   on branch `review-setup` from the default branch, commit, push, and open a PR. Never
-  commit to the default branch. Ensure `.gitignore` has a `.claude/worktrees/` line.
+  commit to the default branch. Ensure `.gitignore` includes the chosen worktree parent directory.
 
 ## Process
 
@@ -119,7 +139,7 @@ In the worktree:
   - `code-review`, `local` → no workflow.
   If a reviewer was found and the chosen mode differs, write nothing and say in the report
   which file to delete to switch.
-- **`CLAUDE.md`.** If it exists, add under `## Commands` (or at the end) each of these
+- **`AGENTS.md` (both hosts).** Create if absent; add under `## Commands` (or at the end) each of these
   lines it lacks. If it does not mention `REVIEW.md`: `Review: REVIEW.md says what a bad
   change looks like here and how findings are reported. Run /local-review before asking
   for a human review.` followed, for any mode but `local`, by ` Every PR also gets

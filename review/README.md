@@ -1,6 +1,6 @@
 # review
 
-Repo-specific code review for Claude Code: a written review policy (`REVIEW.md`) that
+Repo-specific code review for Claude Code and Codex: a written review policy (`REVIEW.md`) that
 people, `/local-review` and an optional PR-time reviewer all read. Findings are comments,
 never approvals.
 
@@ -9,6 +9,17 @@ never approvals.
 ```
 /plugin install review --marketplace psycoder-sup/claude-plugin
 ```
+
+For Codex, run `codex plugin marketplace add psycoder-sup/claude-plugin`, then open
+`/plugins` and install `review` from `psycoder-tools`. Start a new chat and invoke
+`$review-setup` or `$local-review` with the same arguments shown below.
+
+Both hosts load the same skills and explicitly read `AGENTS.md`. Setup writes review
+and PR-template instructions there, and local review records recurring findings under
+`## Recurring review findings`. Codex uses `.worktrees/review-setup` and checks PR
+template headings manually. Claude Code uses `.claude/worktrees/review-setup` and
+the existing hook.
+PR-time reviewer choices are independent of the host running setup.
 
 ## Skills
 
@@ -20,9 +31,9 @@ Reads the repo and writes what is specific to it, on a branch, then opens a PR:
   cap, re-review rounds, do-not-report paths
 - `.github/CODEOWNERS` for the High tier (with `--owners`)
 - `.github/pull_request_template.md`
-- `.claude/hooks/pr-template-check.py`: blocks a `gh pr create` whose body skips the
+- Claude Code only: `.claude/hooks/pr-template-check.py`: blocks a `gh pr create` whose body skips the
   template's headings
-- lines in `CLAUDE.md`
+- lines in `AGENTS.md` (both hosts)
 - the PR-time reviewer you pick (optional):
 
 | `--post-review` | PR-time reviewer | Needs |
