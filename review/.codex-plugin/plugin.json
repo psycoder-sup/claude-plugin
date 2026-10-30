@@ -1,0 +1,9 @@
+{
+    "name": "review",
+    "description": "Repo-specific review policy setup and local code review for Claude Code and Codex.",
+    "version": "1.1.0",
+    "author": {
+        "name": "Psycoder SUP"
+    },
+    "skills": "./skills/"
+}

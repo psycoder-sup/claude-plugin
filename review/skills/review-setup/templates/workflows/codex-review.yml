@@ -51,7 +51,7 @@ jobs:
 
             REVIEW.md at the repo root is the whole policy: its failure modes, passes,
             finding tags, nit cap and do-not-report list. Read it first and follow it
-            exactly. AGENTS.md or CLAUDE.md, if present, holds the repo's conventions.
+            exactly. AGENTS.md, if present, holds the repo's conventions.
 
             Verify every finding by reading the code it touches; drop what you cannot
             confirm. Output markdown only: first line is the count REVIEW.md asks for,

@@ -1,7 +1,7 @@
 # Reviewing <repo name>
 
 Policy for every review of this repo: by a person, by `/local-review`, and by
-the PR reviewer, if the repo has one. `CLAUDE.md` covers the stack and layout; this file covers what a bad
+the PR reviewer, if the repo has one. `AGENTS.md` covers the stack and layout; this file covers what a bad
 change looks like here and how to report it. Owned by the tech lead; tuned when findings
 are rated.
 
@@ -18,7 +18,7 @@ are rated.
 - **Security**: injection, authentication or authorisation gaps, secrets or personal
   data in logs, errors and responses.
 - **Compliance**: the change does what its PR says, follows the conventions in
-  `CLAUDE.md` and the decisions in `docs/adr/`, and matches any spec or plan it cites
+  `AGENTS.md` and the decisions in `docs/adr/`, and matches any spec or plan it cites
   (an issue, a spec or a design doc, where an unrecorded deviation is a
   finding).
 
@@ -71,4 +71,4 @@ itself is the problem.
 ## When a review repeats itself
 
 If the same kind of comment comes up on two PRs, it belongs in a rule, not in a third
-comment: add it to `CLAUDE.md` "Things Claude gets wrong", to this file, or to a test.
+comment: add it to `AGENTS.md` under `## Recurring review findings`, to this file, or to a test.

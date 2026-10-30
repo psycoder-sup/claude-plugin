@@ -5,7 +5,7 @@ description: >
   report only findings verified by reading the surrounding code, rank most-severe first,
   cap nits at the file's number, skip what it says to skip. --comment posts inline PR
   comments; --fix applies findings and re-runs the repo's commands. A finding category
-  seen twice becomes a line in CLAUDE.md "Things Claude gets wrong". Use before asking a
+  seen twice becomes a line in AGENTS.md. Use before asking a
   human to review.
 argument-hint: "[<PR number> | <branch> | <path>] [--comment] [--fix]"
 allowed-tools: ["Read", "Edit", "MultiEdit", "Bash", "Glob", "Grep", "Agent", "AskUserQuestion"]
@@ -17,6 +17,15 @@ Apply the repo's written review policy to a change, on this machine. `REVIEW.md`
 repo root is the policy: its failure modes, passes, definition of Important, nit cap and
 do-not-report list. This skill is the reviewer that reads it. People and any PR-time
 reviewer read the same file; that is the point.
+
+## Host compatibility
+
+Use native host tools for file reads, edits, shell commands, and questions. The
+`allowed-tools` list names Claude Code tools. In both Claude Code and Codex, read
+`AGENTS.md` explicitly and write recurring findings there under
+`## Recurring review findings`. Create the file or heading if absent and preserve
+existing content. Read an existing `CLAUDE.md` for additional repository context,
+but keep generated review guidance in `AGENTS.md`.
 
 ## Target
 
@@ -50,8 +59,7 @@ then `master`, whichever exists. State the target and the diff size in the repor
 6. **Recurrence.** Give each finding a short category slug (`unquoted-csv-field`,
    `missing-null-check`, `test-asserts-internals`). If the same category was reported in
    an earlier review of this repo that you can see (earlier in this session, or in the
-   PR's existing review comments), append one line to `CLAUDE.md` under `## Things Claude
-   gets wrong` stating the rule in imperative form, and say so in the report. Create the
+   PR's existing review comments), append one line to `AGENTS.md` under `## Recurring review findings` stating the rule in imperative form, and say so in the report. Create the
    heading if missing; never duplicate an existing line.
 7. **Output** in this order: the target and diff size; the count line `REVIEW.md` asks
    for (e.g. `2 Important, 1 Nit, 0 Pre-existing.`); Important findings as a numbered
@@ -69,7 +77,7 @@ then `master`, whichever exists. State the target and the diff size in the repor
   finding already open or answered. Never approve or request changes: findings inform the
   human reviewer, they do not gate.
 - **`--fix`**: apply each Important finding's fix to the working tree (nits only when
-  trivial and safe), then run every command under `CLAUDE.md` `## Commands` (or the
+  trivial and safe), then run every command under `AGENTS.md` `## Commands` (or the
   repo's test, lint and type-check commands if there is no such section) and paste the
   tail of the output. Red → revert the fix that broke it and report. Never edit a test to
   make a finding go away. Do not commit; the caller does.
